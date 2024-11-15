@@ -1,12 +1,16 @@
 #!/usr/bin/Rscript
-
 ## Script name: biosolutions_analysis.R
 ##
 ## Purpose of script: 
+## Data summary and statistics of biosolutions project experiments.
+## There are 3 different plant conditions that are inoculated with 
+## ~60 microbial isolates to screen their role association with 
+## plant growth.
+## The plant model is Arabidopsis thaliana.
 ##
 ## Author: Savvas Paragkamian
 ##
-## Date Created: 2024-11-05
+## Date Created: 2024-11-14
 ##
 library(tidyverse)
 library(readxl)
@@ -30,16 +34,11 @@ ids <- c("378", "295", "247", "620", "614", "253", "305", "323", "345", "094",
          "324", "343", "347", "348", "356", "550", "552", "558", "574", "605", 
          "606", "609", "621", "623", "624", "628", "740", "742", "1020", "1060")
 
-ids[!(ids %in% unique(all_experiments$microbe_id))] 
-
-microbes_not_in_biosolutions <- microbes[!(microbes$microbe_id %in% ids),]
-
-##
-##
+## Combine all data from experiments
 all_experiments <- rbind(pgp_data,nacl_data,water_deficit_data)
 
 
-all_experiments_microbes <- all_experiments |>
+microbes_conditions_summary <- all_experiments |>
     distinct(microbe_id,condition) |> 
     group_by(microbe_id) |> 
     summarise(n_conditions=n(),
@@ -47,3 +46,11 @@ all_experiments_microbes <- all_experiments |>
 
 batch_summary <- all_experiments |> 
     distinct(batch_id, microbe_id,condition)
+
+## microbes summary and next steps
+# ids from report not in experiments data
+ids[!(ids %in% unique(all_experiments$microbe_id))] 
+
+# microbes from the updated list of microbes not in ids from report
+microbes_not_in_biosolutions <- microbes[!(microbes$microbe_id %in% ids),]
+
