@@ -89,26 +89,35 @@ all_experiments_stats_l <- all_experiments_stats |>
     names_to = "variable",
     values_to = "value")
 
-#
+
+# Calculate percentage change
 # Data
-#df <- tibble(
-#  id = c("A", "A", "B", "B"),
-#  condition = c("control", "treated", "control", "treated"),
-#  value = c(10, 15, 8, 12)
-#)
-#
-## Calculate percentage change
-#df <- df %>%
-#  group_by(id) %>%
-#  mutate(control_value = value[condition == "control"], # Extract control value
-#         percent_change = ((value - control_value) / control_value) * 100) %>%
-#  ungroup() %>%
-#  select(-control_value) # Optional: Remove intermediate control_value column
+df <- tibble(
+  id = c("A", "A", "B", "B"),
+  condition = c("control", "treated", "control", "treated"),
+  value = c(10, 15, 8, 12)
+)
+df2 <- df %>%
+  group_by(id) %>%
+  mutate(control_value = value[condition == "control"], # Extract control value
+         percent_change = ((value - control_value) / control_value) * 100) %>%
+  ungroup() %>%
+  select(-control_value) # Optional: Remove intermediate control_value column
+
+
+all_experiments_norm <- all_experiments_stats |>
+    group_by(batch_id) |>
+    mutate(control_value = var_fresh_weight_mg_mean[microbe_id == "Control"], # Extract control value
+         percent_change = ((var_fresh_weight_mg_mean - control_value) / control_value) * 100) %>%
+  ungroup() %>%
+  select(-control_value) # Optional: Remove intermediate control_value column
+
 #all_experiments_stats_l_n <- all_experiments_stats_l |>
 #    group_by()
 
 ## Figures
-
+#
+### for all variables across contitions
 vars <- unique(all_experiments_stats_l$variable)
 vars_mean <- vars[grep("mean",vars)]
 vars_err <- vars[grep("sderr",vars)]
@@ -133,7 +142,9 @@ for (i in seq_along(vars_mean)){
                 theme_bw() +
                 scale_fill_brewer(palette = "Set3") +
                 theme(
-                      axis.text.x = element_text(angle = 45, hjust = 1,size = 11)
+                      axis.text.x = element_text(angle = 45,
+                                                 hjust = 1,
+                                                 size = 11)
                 )
     
     ggsave(paste0("../figures/plant_growth_promotion_mean_",vars_mean[i],".png"),
@@ -147,5 +158,59 @@ for (i in seq_along(vars_mean)){
 }
 
 
+### for each batch and each variable
+
+batches <- unique(all_experiments_stats$batch_id)
+
+for (b in seq_along(batches)) {
+
+    batch_data <- all_experiments_stats |>
+        filter(batch_id==batches[b])
+
+    condition <- unique(batch_data$condition)
+    print(batches[b])
+    print(condition)
+
+    for (i in seq_along(vars_mean)){
+        print(i)
+    
+        fig_bar <- ggplot(batch_data,
+                          aes(x = microbe_id,
+                              y = !!sym(vars_mean[i]))) + 
+                    geom_col(width = 0.6,
+                             position = "identity")+
+                    #position_dodge(width = 0.82)) +
+                    geom_errorbar(aes(ymin = !!sym(vars_mean[i]) - !!sym(vars_err[i]),
+                                      ymax = !!sym(vars_mean[i]) + !!sym(vars_err[i])),
+                                  #position = position_dodge(width = 0.82),
+                                  width = 0.1) +  # Error bars
+                    labs(
+                         title = paste0(condition," batch = ",batches[b]),
+                         x = "Microbe ID",
+                         y = vars_mean[i]) +
+                    theme_bw() +
+                    scale_fill_brewer(palette = "Set3") +
+                    theme(
+                          axis.text.x = element_text(angle = 45,
+                                                     hjust = 1,
+                                                     size = 11)
+                    )
+        
+        ggsave(paste0("../figures/","batch_",
+                      batches[b],
+                      "_",condition,"_",
+                      vars_mean[i],".png"),
+               plot=fig_bar, 
+               height = 20, 
+               width = 50,
+               dpi = 300, 
+               units="cm",
+               device="png")
+        
+    }
+}
 
 ## Statistics
+
+
+
