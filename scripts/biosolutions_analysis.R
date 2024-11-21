@@ -71,7 +71,7 @@ microbes_not_in_biosolutions <- microbes[!(microbes$microbe_id %in% ids),]
 ## Normalisation
 ## how to compare with the control values?
 
-
+### calculate mean and sd error values
 all_experiments_stats <- all_experiments |>
     group_by(microbe_id,batch_id,condition) |>
     summarise(across(
@@ -81,39 +81,46 @@ all_experiments_stats <- all_experiments |>
                           sderr = ~sd(.,na.rm=T) / sqrt(n())),
                      .names = "{.col}_{.fn}"),
               var_n_plants=n(),
-              .groups="keep")
+              .groups="keep") |>
+    ungroup()
 
 
+### transform to long format
 all_experiments_stats_l <- all_experiments_stats |>
     pivot_longer(cols = starts_with("var"),
     names_to = "variable",
     values_to = "value")
 
 
-# Calculate percentage change
 # Data
-df <- tibble(
-  id = c("A", "A", "B", "B"),
-  condition = c("control", "treated", "control", "treated"),
-  value = c(10, 15, 8, 12)
-)
-df2 <- df %>%
-  group_by(id) %>%
-  mutate(control_value = value[condition == "control"], # Extract control value
-         percent_change = ((value - control_value) / control_value) * 100) %>%
-  ungroup() %>%
+
+all_experiments_mean_l <- all_experiments_stats |>
+    dplyr::select(microbe_id,
+                  batch_id,
+                  condition,
+                  contains("mean")) |>
+    pivot_longer(
+        cols = contains("mean"),  # Select columns with "mean" in their names
+        names_to = "variable",    # Create a column for variable names
+        values_to = "value")       # Create a column for the value
+
+
+# Calculate percentage change
+all_experiments_norm <- all_experiments_mean_l |>
+    group_by(batch_id,variable) |>
+    mutate(control_value = value[microbe_id == "Control"], #Extract control value
+         percent_change = ((value - control_value) / control_value) * 100) |>
+  ungroup() |>
   select(-control_value) # Optional: Remove intermediate control_value column
 
+all_experiments_norm_no_control <- all_experiments_norm |>
+    select(-value) %>%  # Remove the original value column
+    pivot_wider(
+                names_from = variable,
+                values_from = percent_change
+                ) |>
+    filter(microbe_id!="Control")
 
-all_experiments_norm <- all_experiments_stats |>
-    group_by(batch_id) |>
-    mutate(control_value = var_fresh_weight_mg_mean[microbe_id == "Control"], # Extract control value
-         percent_change = ((var_fresh_weight_mg_mean - control_value) / control_value) * 100) %>%
-  ungroup() %>%
-  select(-control_value) # Optional: Remove intermediate control_value column
-
-#all_experiments_stats_l_n <- all_experiments_stats_l |>
-#    group_by()
 
 ## Figures
 #
@@ -125,7 +132,7 @@ vars_err <- vars[grep("sderr",vars)]
 for (i in seq_along(vars_mean)){
     print(i)
 
-    fig_bar <- ggplot(all_experiments_stats,
+    fig_bar_all <- ggplot(all_experiments_stats,
                       aes(x = microbe_id,
                           y = !!sym(vars_mean[i]),
                           fill = condition)) + 
@@ -148,7 +155,37 @@ for (i in seq_along(vars_mean)){
                 )
     
     ggsave(paste0("../figures/plant_growth_promotion_mean_",vars_mean[i],".png"),
-           plot=fig_bar, 
+           plot=fig_bar_all, 
+           height = 20, 
+           width = 50,
+           dpi = 300, 
+           units="cm",
+           device="png")
+
+## percent change
+
+    fig_percent_c <- ggplot(all_experiments_norm_no_control,
+                      aes(x = microbe_id,
+                          y = !!sym(vars_mean[i]),
+                          fill = condition)) + 
+                geom_col(width = 0.6,
+                         position = position_dodge(width = 0.82)) +
+                labs(
+                     title = "Percentage Change with mean of Control plants",
+                     x = "Microbe ID",
+                     y = vars_mean[i]) +
+                theme_bw() +
+                scale_fill_brewer(palette = "Set3") +
+                theme(
+                      axis.text.x = element_text(angle = 45,
+                                                 hjust = 1,
+                                                 size = 11)
+                )
+    
+    ggsave(paste0("../figures/plant_growth_promotion_percent_change_",
+                  vars_mean[i],
+                  ".png"),
+           plot=fig_percent_c, 
            height = 20, 
            width = 50,
            dpi = 300, 
