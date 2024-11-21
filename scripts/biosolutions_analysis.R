@@ -198,6 +198,7 @@ for (i in seq_along(vars_mean)){
 ### for each batch and each variable
 
 batches <- unique(all_experiments_stats$batch_id)
+vars_a <- colnames(all_experiments)[grepl("var", colnames(all_experiments))]
 
 for (b in seq_along(batches)) {
 
@@ -207,6 +208,8 @@ for (b in seq_along(batches)) {
     condition <- unique(batch_data$condition)
     print(batches[b])
     print(condition)
+    print("bar plot")
+    # bar plot
 
     for (i in seq_along(vars_mean)){
         print(i)
@@ -236,14 +239,55 @@ for (b in seq_along(batches)) {
         ggsave(paste0("../figures/","batch_",
                       batches[b],
                       "_",condition,"_",
-                      vars_mean[i],".png"),
+                      vars_mean[i],"_bar.png"),
                plot=fig_bar, 
                height = 20, 
                width = 50,
                dpi = 300, 
                units="cm",
                device="png")
+    }
         
+    print("box plot")
+    # box plot
+    batch_data_a <- all_experiments |>
+        filter(batch_id==batches[b])
+
+
+    for (i in seq_along(vars_a)){
+        print(i)
+    
+        fig_bar <- ggplot(batch_data_a,
+                          aes(x = microbe_id,
+                              y = !!sym(vars_a[i]))) + 
+                    geom_boxplot(width = 0.6,
+                             position = "identity")+
+                    geom_point(
+                             position = "identity")+
+                    #position_dodge(width = 0.82)) +
+                    labs(
+                         title = paste0(condition," batch = ",batches[b]),
+                         x = "Microbe ID",
+                         y = vars_a[i]) +
+                    theme_bw() +
+                    scale_fill_brewer(palette = "Set3") +
+                    theme(
+                          axis.text.x = element_text(angle = 45,
+                                                     hjust = 1,
+                                                     size = 11)
+                    )
+        
+        ggsave(paste0("../figures/","batch_",
+                      batches[b],
+                      "_",condition,"_",
+                      vars_a[i],"_boxplot.png"),
+               plot=fig_bar, 
+               height = 20, 
+               width = 50,
+               dpi = 300, 
+               units="cm",
+               device="png")
+
     }
 }
 
