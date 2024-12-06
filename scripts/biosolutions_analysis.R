@@ -1,4 +1,4 @@
-#!/usr/bin/Rscript
+#!/usr/bin/env Rscript
 ## Script name: biosolutions_analysis.R
 ##
 ## Purpose of script: 
@@ -18,19 +18,19 @@ library(readxl)
 
 # load data
 
-pgp_data <- read_delim("../data/sarrislab_in_planta_experiments.xlsx - pgp_experiment.tsv",
+pgp_data <- read_delim("../data/sarrislab_biosolutions_project.xlsx - pgp_experiment.tsv",
                        na=c("","NA"),
                        delim="\t")
-nacl_data <- read_delim("../data/sarrislab_in_planta_experiments.xlsx - nacl_experiment.tsv",
+nacl_data <- read_delim("../data/sarrislab_biosolutions_project.xlsx - nacl_experiment.tsv",
                        na=c("","NA"),
                        delim="\t")
-water_deficit_data <- read_delim("../data/sarrislab_in_planta_experiments.xlsx - water_deficit_experiment.tsv",
+water_deficit_data <- read_delim("../data/sarrislab_biosolutions_project.xlsx - water_deficit_experiment.tsv",
                        na=c("","NA"),
                        delim="\t")
 
-microbes <- read_delim("../data/sarrislab_in_planta_experiments.xlsx - microbes.tsv", delim="\t")
+microbes <- read_delim("../data/sarrislab_biosolutions_project.xlsx - microbes.tsv", delim="\t")
 
-plant_batches <- read_delim("../data/sarrislab_in_planta_experiments.xlsx - plant_batches.tsv", delim="\t")
+plant_batches <- read_delim("../data/sarrislab_biosolutions_project.xlsx - plant_batches.tsv", delim="\t")
 
 
 # microbe ids from the first report
@@ -44,6 +44,8 @@ ids <- c("378", "295", "247", "620", "614", "253", "305", "323", "345", "094",
 ## Combine all data from experiments
 all_experiments <- bind_rows(pgp_data,nacl_data,water_deficit_data)
 all_experiments$microbe_id <- gsub('"', '', all_experiments$microbe_id)
+
+print(unique(all_experiments$condition))
 
 microbes_conditions_summary <- all_experiments |>
     distinct(microbe_id,condition) |> 
@@ -68,6 +70,7 @@ ids[!(ids %in% unique(all_experiments$microbe_id))]
 # microbes from the updated list of microbes not in ids from report
 microbes_not_in_biosolutions <- microbes[!(microbes$microbe_id %in% ids),]
 
+
 ## Normalisation
 ## how to compare with the control values?
 
@@ -91,6 +94,11 @@ all_experiments_stats_l <- all_experiments_stats |>
     names_to = "variable",
     values_to = "value")
 
+
+## only controls all data
+controls_all <- all_experiments |>
+    filter(microbe_id %in% c("Control", "E. coli")) |>
+    mutate(controls = paste(microbe_id,batch_id, sep="_"))# ,"E. coli" 
 
 # Data
 
@@ -290,6 +298,58 @@ for (b in seq_along(batches)) {
 
     }
 }
+
+conditions <- unique(all_experiments$condition)
+
+controls_all_l <- controls_all |>
+    pivot_longer(cols = starts_with("var"),
+                 names_to = "variable",
+                 values_to = "value")
+
+for (i in seq_along(conditions)) {
+
+
+    controls_all_c <- controls_all_l |>
+        filter(condition==conditions[i]) 
+
+    fig_controls <- ggplot(controls_all_c,
+                      aes(x = controls,
+                          y = value)) + 
+                geom_boxplot(width = 0.6,
+                         position = "identity")+
+                geom_point(
+                         position = "identity")+
+                #position_dodge(width = 0.82) +
+                labs(
+                     x = "Microbe ID",
+                     y = "value") +
+                theme_bw() +
+                scale_fill_brewer(palette = "Set3") +
+                theme(
+                      axis.text.x = element_text(angle = 45,
+                                                 hjust = 1,
+                                                 size = 11)
+                )+
+                facet_wrap(~variable, ncol=1, nrow=9,scales="free" )
+    
+    ggsave(paste0("../figures/","batch_controls_",conditions[i],"_boxplot.png"),
+           plot=fig_controls, 
+           height = 90, 
+           width = 15,
+           dpi = 300, 
+           units="cm",
+           device="png")
+
+}
+
+## plant batches
+##
+plant_batches_w <- plant_batches |> 
+    filter(!is.na(date)) |>
+    pivot_wider(id_cols=batch_id,names_from=action, values_from=date) |>
+    rename(wet_mass_measurement = `wet mass measurement`,
+           dry_mass_measurement = `dry mass measurement`)
+
 
 ## Statistics
 
