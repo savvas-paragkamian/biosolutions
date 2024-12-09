@@ -344,11 +344,43 @@ for (i in seq_along(conditions)) {
 
 ## plant batches
 ##
+
+plant_batches_l <- plant_batches |> 
+    filter(!is.na(date)) #|>
+    #mutate(date=as.Date(date))
+
+batch_plot <- ggplot()+
+    geom_col(plant_batches_l,
+             mapping=aes(y=date,
+                 x=as.character(batch_id),
+                 fill=action),
+             position="stack")+
+    theme_bw() 
+
+ggsave("../figures/batch_dates_barplot.png",
+       plot=batch_plot, 
+       height = 30, 
+       width = 30,
+       dpi = 300, 
+       units="cm",
+       device="png")
+
+data <- data.frame(
+  date = as.Date(c("2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01")),
+  value = c(10, 20, 15, 25)
+)
+
+# Create the ggplot
+ggplot(data, aes(x = date, y = value)) +
+  geom_col(fill = "skyblue") +
+  labs(title = "Column Chart with Dates",
+       x = "Date",
+       y = "Value") +
+  theme_minimal()
+
 plant_batches_w <- plant_batches |> 
     filter(!is.na(date)) |>
-    pivot_wider(id_cols=batch_id,names_from=action, values_from=date) |>
-    rename(wet_mass_measurement = `wet mass measurement`,
-           dry_mass_measurement = `dry mass measurement`)
+    pivot_wider(id_cols=batch_id,names_from=action, values_from=date) 
 
 
 ## Statistics
