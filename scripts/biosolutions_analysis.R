@@ -345,42 +345,68 @@ for (i in seq_along(conditions)) {
 ## plant batches
 ##
 
-plant_batches_l <- plant_batches |> 
-    filter(!is.na(date)) #|>
-    #mutate(date=as.Date(date))
+batch_condition <- plant_batches |>
+    filter(action=="condition") |>
+    dplyr::select(batch_id,value) |>
+    rename("condition"="value")
 
-batch_plot <- ggplot()+
-    geom_col(plant_batches_l,
-             mapping=aes(y=date,
-                 x=as.character(batch_id),
-                 fill=action),
-             position="stack")+
+plant_batches_w <- plant_batches |> 
+    filter(!is.na(date)) |>
+    pivot_wider(id_cols=batch_id,
+                names_from=action,
+                values_from=date) 
+
+batch_steps <- data.frame(action=c("plant_seeds","inoculation","wet_mass_measurement"),
+                         steps=c("plant_growth","inoculation","measurements"))
+
+plant_batches_l <- plant_batches |> 
+    filter(!is.na(date)) |>
+    group_by(batch_id) |>
+    mutate(date_end=if_else(is.na(lead(date)), date, lead(date))) |>
+    left_join(batch_steps) |>
+    left_join(batch_condition) |>
+    ungroup() |>
+    mutate(duration=date_end-date) |>
+    filter(duration>0) |>
+    mutate(midpoint = date + (date_end - date) / 2)
+
+
+batch_plot <- ggplot(data=plant_batches_l)+
+    geom_segment(
+             mapping=aes(y=as.factor(batch_id),
+                         x=date,
+                         xend=date_end,
+                   #      linetype=condition,
+                         color=steps),
+                         linewidth= 10
+             )+
+    geom_text(aes(x = midpoint,
+                  y=as.factor(batch_id),
+                  label = duration),
+              color = "black") +
+    scale_color_manual(values=c("plant_growth"="forestgreen",
+                                "inoculation"="goldenrod1",
+                                "measurements"="lightskyblue")) +
+    scale_x_date(
+        date_breaks = "1 month",                # Breaks every month
+        date_labels = "%m, %Y"
+        ) +
+    labs(
+        title = "Gantt Chart of in planta experiments",
+        x = "Date",
+        y = "Batches",
+        color="Step",
+      #  linetype = "Condition"
+        ) +
     theme_bw() 
 
 ggsave("../figures/batch_dates_barplot.png",
        plot=batch_plot, 
-       height = 30, 
-       width = 30,
+       height = 20, 
+       width = 40,
        dpi = 300, 
        units="cm",
        device="png")
-
-data <- data.frame(
-  date = as.Date(c("2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01")),
-  value = c(10, 20, 15, 25)
-)
-
-# Create the ggplot
-ggplot(data, aes(x = date, y = value)) +
-  geom_col(fill = "skyblue") +
-  labs(title = "Column Chart with Dates",
-       x = "Date",
-       y = "Value") +
-  theme_minimal()
-
-plant_batches_w <- plant_batches |> 
-    filter(!is.na(date)) |>
-    pivot_wider(id_cols=batch_id,names_from=action, values_from=date) 
 
 
 ## Statistics
