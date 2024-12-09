@@ -53,9 +53,6 @@ microbes_conditions_summary <- all_experiments |>
     summarise(n_conditions=n(),
               conditions_tested=str_c(condition, collapse = ","))
 
-batch_summary <- all_experiments |> 
-    distinct(batch_id, microbe_id,condition)
-
 # there are some microbes that have been tested twice 
 # in the same condition
 microbes_batches_summary <- all_experiments |>
@@ -350,6 +347,14 @@ batch_condition <- plant_batches |>
     dplyr::select(batch_id,value) |>
     rename("condition"="value")
 
+batch_microbes <- all_experiments |> 
+    distinct(batch_id, microbe_id) |>
+    filter(!(microbe_id %in% c("Control", "E. coli"))) |>
+    group_by(batch_id) |>
+    summarise(microbes=n(),
+              microbes_id=str_c(microbe_id, collapse = ","))
+
+
 plant_batches_w <- plant_batches |> 
     filter(!is.na(date)) |>
     pivot_wider(id_cols=batch_id,
@@ -359,16 +364,21 @@ plant_batches_w <- plant_batches |>
 batch_steps <- data.frame(action=c("plant_seeds","inoculation","wet_mass_measurement"),
                          steps=c("plant_growth","inoculation","measurements"))
 
-plant_batches_l <- plant_batches |> 
+plant_batches_l <- plant_batches |>
     filter(!is.na(date)) |>
+    dplyr::select(-c(value,Comments)) |>
     group_by(batch_id) |>
     mutate(date_end=if_else(is.na(lead(date)), date, lead(date))) |>
     left_join(batch_steps) |>
     left_join(batch_condition) |>
+    left_join(batch_microbes) |>
     ungroup() |>
     mutate(duration=date_end-date) |>
     filter(duration>0) |>
-    mutate(midpoint = date + (date_end - date) / 2)
+    mutate(midpoint = date + (date_end - date) / 2) |>
+    mutate(endpoint = if_else(steps=="measurements",date_end + 3,NA)) 
+
+write_delim(plant_batches_l,"../results/plant_batches_results.tsv",delim="\t")
 
 
 batch_plot <- ggplot(data=plant_batches_l)+
@@ -376,7 +386,6 @@ batch_plot <- ggplot(data=plant_batches_l)+
              mapping=aes(y=as.factor(batch_id),
                          x=date,
                          xend=date_end,
-                   #      linetype=condition,
                          color=steps),
                          linewidth= 10
              )+
@@ -384,26 +393,37 @@ batch_plot <- ggplot(data=plant_batches_l)+
                   y=as.factor(batch_id),
                   label = duration),
               color = "black") +
+    geom_text(aes(x = endpoint,
+                  y=as.factor(batch_id),
+                  label = paste0(condition,"\nmicrobes=",microbes,sep="")),
+              hjust=0,
+              size=3,
+              color = "black") +
     scale_color_manual(values=c("plant_growth"="forestgreen",
                                 "inoculation"="goldenrod1",
                                 "measurements"="lightskyblue")) +
     scale_x_date(
         date_breaks = "1 month",                # Breaks every month
-        date_labels = "%m, %Y"
+        date_labels = "%m, %Y",
+        limits=as.Date(c("2023-09-01","2025-02-01"))
         ) +
     labs(
         title = "Gantt Chart of in planta experiments",
         x = "Date",
         y = "Batches",
         color="Step",
-      #  linetype = "Condition"
         ) +
-    theme_bw() 
+    theme_bw() +
+    theme(
+          legend.position = "inside",
+          legend.position.inside=c(0.08,0.78),
+          panel.grid.minor = element_blank()
+    )
 
 ggsave("../figures/batch_dates_barplot.png",
        plot=batch_plot, 
-       height = 20, 
-       width = 40,
+       height =15, 
+       width = 30,
        dpi = 300, 
        units="cm",
        device="png")
