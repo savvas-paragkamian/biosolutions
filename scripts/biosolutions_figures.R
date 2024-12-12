@@ -179,7 +179,7 @@ for (b in seq_along(batches)) {
                                            color="mediumseagreen"),
                                fill="mediumseagreen",
                                shape = 21,
-                               alpha = 0.2,
+                               alpha = 0.8,
                                show.legend = F,
                                position = position_jitterdodge(0.3))+
                     #position_dodge(width = 0.82)) +
@@ -345,3 +345,74 @@ ggsave("../figures/batch_dates_barplot.png",
        units="cm",
        device="png")
 
+
+############################# summary statistics ########################
+
+plant_batch_stats_kruskal <- plant_batches_l |>
+    distinct(batch_id,condition,microbes,microbes_id) |>
+    filter(!is.na(microbes_id)) |>
+    right_join(stats_results_kruskal) |>
+    rename("variable"="kruskal_variable")
+
+plant_batch_stats_sig_k <- plant_batch_stats_kruskal |>
+    filter(kruskal_p.value<0.05) |>
+    group_by(condition, variable) |>
+    summarise(n_batches=n(),
+              batches=str_c(batch_id, collapse = ","),
+              .groups="keep") |>
+    mutate(statistic="kruskal")
+
+plant_batch_stats_anova <- plant_batches_l |>
+    distinct(batch_id,condition,microbes,microbes_id) |>
+    filter(!is.na(microbes_id)) |>
+    right_join(stats_results_anova) |>
+    rename("variable"="anova_variable")
+
+plant_batch_stats_sig <- plant_batch_stats_anova |>
+    filter(anova_p.value<0.05) |>
+    group_by(condition, variable) |>
+    summarise(n_batches=n(),
+              batches= str_c(batch_id, collapse = ","),
+              .groups="keep") |>
+    mutate(statistic="anova") |>
+    bind_rows(plant_batch_stats_sig_k) |>
+    mutate(midpoint = n_batches / 2)
+
+plant_batch_sig_fig <- ggplot() +
+    geom_col(data=plant_batch_stats_sig,
+             mapping=aes(y=variable,
+                         x=n_batches,
+                         fill=statistic),
+             width = 0.6,
+             position = position_dodge(width = 0.82)) +
+    geom_text(data=plant_batch_stats_sig,
+              mapping=aes(y = variable,
+                          x = midpoint,
+                          group = statistic,
+                          label = batches),
+              color = "black",
+              position = position_dodge(width = 0.82)) +
+    labs(
+         title = "Plant batches with p.value less than 0.05",
+         y = "Variables",
+         x = "# Batches") +
+    theme_bw() +
+    scale_fill_manual(values=c("kruskal"="goldenrod3",
+                               "anova"="cadetblue")) +
+    theme(
+          axis.text.y = element_text(size = 13),
+          axis.text.x = element_text(angle = 0,
+                                     hjust = 1,
+                                     size = 13)
+    )+
+    facet_wrap(~condition,
+               nrow=1,
+               ncol=3)
+
+    ggsave("../figures/plant_batches_statistics_sig.png",
+           plot=plant_batch_sig_fig, 
+           height = 20, 
+           width = 50,
+           dpi = 300, 
+           units="cm",
+           device="png")
