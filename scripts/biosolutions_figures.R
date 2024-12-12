@@ -22,6 +22,9 @@ all_experiments <- read_delim("../results/all_experiments_data.tsv",delim="\t")
 
 all_experiments_stats <- read_delim("../results/all_experiments_stats.tsv",delim="\t")
 
+## statistics
+stats_results_anova <- read_delim("../results/stats_results_anova.tsv",delim="\t")
+stats_results_kruskal <- read_delim("../results/stats_results_kruskal.tsv",delim="\t")
 
 ### transform to long format
 all_experiments_stats_l <- all_experiments_stats |>
@@ -148,6 +151,9 @@ for (b in seq_along(batches)) {
     batch_data <- all_experiments_stats |>
         filter(batch_id==batches[b])
 
+    batch_data_a <- all_experiments |>
+        filter(batch_id==batches[b])
+
     condition <- unique(batch_data$condition)
     print(batches[b])
     print(condition)
@@ -156,15 +162,31 @@ for (b in seq_along(batches)) {
 
     for (i in seq_along(vars_mean)){
         print(i)
+        print(vars_mean[i])
+        print(vars_a[i])
     
-        fig_bar <- ggplot(batch_data,
-                          aes(x = microbe_id,
-                              y = !!sym(vars_mean[i]))) + 
-                    geom_col(width = 0.6,
+        fig_bar <- ggplot()+
+                    geom_col(batch_data,
+                             mapping=aes(x = microbe_id,
+                              y = !!sym(vars_mean[i])),
+                              color="mediumseagreen",
+                             fill="white",
+                             width = 0.6,
                              position = "identity")+
+                    geom_point(data=batch_data_a,
+                               mapping=aes(x = microbe_id,
+                                           y=!!sym(vars_a[i]),
+                                           color="mediumseagreen"),
+                               fill="mediumseagreen",
+                               shape = 21,
+                               alpha = 0.2,
+                               show.legend = F,
+                               position = position_jitterdodge(0.3))+
                     #position_dodge(width = 0.82)) +
-                    geom_errorbar(aes(ymin = !!sym(vars_mean[i]) - !!sym(vars_err[i]),
-                                      ymax = !!sym(vars_mean[i]) + !!sym(vars_err[i])),
+                    geom_errorbar(batch_data,
+                                  mapping=aes(x= microbe_id,
+                                              ymin = !!sym(vars_mean[i]) - !!sym(vars_err[i]),
+                                              ymax = !!sym(vars_mean[i]) + !!sym(vars_err[i])),
                                   #position = position_dodge(width = 0.82),
                                   width = 0.1) +  # Error bars
                     labs(
@@ -193,9 +215,6 @@ for (b in seq_along(batches)) {
         
     print("box plot")
     # box plot
-    batch_data_a <- all_experiments |>
-        filter(batch_id==batches[b])
-
 
     for (i in seq_along(vars_a)){
         print(i)
