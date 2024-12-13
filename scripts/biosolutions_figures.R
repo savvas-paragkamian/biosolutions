@@ -62,12 +62,12 @@ all_experiments_norm <- all_experiments_mean_l |>
   select(-control_value) # Optional: Remove intermediate control_value column
 
 all_experiments_norm_no_control <- all_experiments_norm |>
-    select(-value) %>%  # Remove the original value column
+    select(-value) |>  # Remove the original value column
     pivot_wider(
                 names_from = variable,
                 values_from = percent_change
                 ) |>
-    filter(microbe_id!="Control")
+    filter(!(microbe_id %in% c("Control","Control+", "E. coli"))
 
 
 ## Figures
