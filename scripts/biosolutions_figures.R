@@ -26,6 +26,8 @@ all_experiments_stats <- read_delim("../results/all_experiments_stats.tsv",delim
 stats_results_anova <- read_delim("../results/stats_results_anova.tsv",delim="\t")
 stats_results_kruskal <- read_delim("../results/stats_results_kruskal.tsv",delim="\t")
 
+control_pairwise_sig <- read_delim("../results/control_pairwise_sig_microbes.tsv",delim="\t")
+
 ### transform to long format
 all_experiments_stats_l <- all_experiments_stats |>
     pivot_longer(cols = starts_with("var"),
@@ -400,6 +402,8 @@ plant_batch_sig_fig <- ggplot() +
     scale_fill_manual(values=c("kruskal"="goldenrod3",
                                "anova"="cadetblue")) +
     theme(
+          legend.position = "inside",
+          legend.position.inside=c(0.96,0.88),
           axis.text.y = element_text(size = 13),
           axis.text.x = element_text(angle = 0,
                                      hjust = 1,
@@ -416,3 +420,72 @@ plant_batch_sig_fig <- ggplot() +
            dpi = 300, 
            units="cm",
            device="png")
+
+### significant pairwise microbes
+plant_batch_c <- plant_batches_l |>
+    distinct(batch_id,condition)
+
+control_pairwise_sig_sum <- control_pairwise_sig |>
+    distinct(microbe_id,batch_id,tukey_variable, tukey_adj.p.value) |>
+    rename("variable"="tukey_variable") |>
+    left_join(plant_batch_c) |> 
+    mutate(
+           significance = case_when(
+                                    tukey_adj.p.value < 0.001 ~ "***",
+                                    tukey_adj.p.value < 0.01 ~ "**",
+                                    tukey_adj.p.value < 0.05 ~ "*",
+                                    tukey_adj.p.value < 0.1 ~ ".",
+                                    TRUE ~ ""  # For non-significant p-values
+           )
+    ) |>
+    group_by(microbe_id,variable,significance,condition,tukey_adj.p.value) |>
+    summarise(n_batches=n(),
+              batches=str_c(batch_id, collapse = ","),
+              .groups="keep") 
+
+
+microbe_heatmap <- ggplot()+
+      geom_tile(data=control_pairwise_sig_sum,
+                aes(y=microbe_id, x=variable,fill=tukey_adj.p.value),
+                color="gray90",
+                alpha=1,
+                show.legend = T)+
+      geom_text(data=control_pairwise_sig_sum,
+                aes(y=microbe_id, x=variable, label=significance),
+                size=4) +
+      scale_fill_gradient(low="#CC79A7",
+                          high="gray87",
+                          breaks=waiver(),
+                          n.breaks=4,
+                          limits=c(min(control_pairwise_sig_sum$tukey_adj.p.value),0.1),
+                          na.value="white",
+                          guide = "colorbar")+
+      guides(fill = guide_colorbar(ticks = FALSE,
+                                   title="tukey_adj\np.value",
+                                   label.vjust = 0.8,
+                                   title.vjust = 0.8))+
+      ylab("") +
+      xlab("")+
+      theme_bw()+
+      theme(
+            panel.border=element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor=element_blank(),
+            axis.text.x = element_text(face="bold",angle = 90, hjust = 0),
+            axis.text.y = element_text(face="bold"),
+            axis.text = element_text(size=13), 
+            axis.title.x=element_blank(),
+            axis.title.y=element_blank(),
+            legend.title=element_text(size=9)) +
+      facet_wrap(~condition,
+               nrow=1,
+               ncol=3)
+
+ggsave("../figures/significant_microbes_control.png",
+       plot = microbe_heatmap,
+       width = 60,
+       height = 30,
+       units='cm', 
+       device = "png",
+       dpi = 300)
+
