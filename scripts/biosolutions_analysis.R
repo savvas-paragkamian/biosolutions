@@ -151,35 +151,39 @@ nested_data <- experiments_fi |>
 variables <- select(experiments_fi, starts_with("var")) %>% colnames()
 
 all_stats <- list()
+pairwise_stats <- list()
 
 for (i in seq_along(variables)) {
     
     print(reformulate("microbe_id", variables[i]))
-
 # Perform tests the var i
-
     asasa <- nested_data |>
         mutate(anova=map(
                       data, ~ broom::tidy(aov(reformulate("microbe_id", variables[i]),
-                                              data = .x)) %>% mutate(variable = variables[i])
-            ),
+                                              data = .x)) %>% mutate(variable = variables[i])),
                kruskal=map(
                       data, ~ broom::tidy(kruskal.test(reformulate("microbe_id", variables[i]),
-                                              data = .x)) %>% mutate(variable = variables[i])
-            )
+                                              data = .x)) %>% mutate(variable = variables[i])),
+               tukey=map(
+                         data, ~ broom::tidy(TukeyHSD(aov(reformulate("microbe_id", variables[i]),
+                                                          data=.x))) %>% mutate(variable = variables[i]))
         )
-    
 # Unnest results for long-format output
     asasa_long <- asasa |>
         select(batch_id,anova,kruskal) |>
         unnest(anova, names_sep = "_") |>
         unnest(kruskal, names_sep = "_")
     
-    all_stats[[i]] <- asasa_long
+    tukey_l <- asasa |>
+        select(batch_id,tukey) |>
+        unnest(tukey, names_sep = "_")
+    pairwise_stats[[i]] <- tukey_l
 
+    all_stats[[i]] <- asasa_long
 }
 
 all_stats_results <- bind_rows(all_stats) |> distinct()
+
 
 stats_results_kruskal <- all_stats_results |>
     dplyr::select(batch_id, starts_with("kruskal")) |>
@@ -194,41 +198,16 @@ stats_results_anova <- all_stats_results |>
 write_delim(stats_results_anova,"../results/stats_results_anova.tsv",delim="\t")
 
 
-# Post hoc test against the control
-#pairwise.wilcox.test(data$value, data$group_id, p.adjust.method = "bonferroni")
+####################### Post hoc test against the control ######################
 
-#experiment_stats <- nested_data |>
-#    mutate(
-#        anova = map(data, ~ aov(var_fresh_weight_mg ~ microbe_id, data = .x)),
-#        anova_d = map(data, ~ aov(var_dry_weight_mg ~ microbe_id, data = .x)),
-#        summary_anova = map(anova, broom::tidy),
-#        kruskal = map(data, ~ kruskal.test(var_fresh_weight_mg ~ microbe_id, data = .x)),
-#        kruskal_d = map(data, ~ kruskal.test(var_dry_weight_mg ~ microbe_id, data = .x)),
-#        summary_kruskal = map(kruskal,broom::tidy)
-#    )
+all_pairwise_results <- bind_rows(pairwise_stats) |> distinct()
 
-# Trasform the summaries to long format with unnest for 
-# easier handling
-#experiment_stats_long <- experiment_stats |>
-#    select(batch_id,summary_anova,summary_kruskal) |>
-#    unnest(summary_anova, names_sep = "_") |>
-#    unnest(summary_kruskal, names_sep = "_")
-#####
-#data <- tibble(
-#  batch_id = rep(1:3, each = 10),
-#  microbe_id = rep(c("A", "B", "C"), times = 10),
-#  var_fresh_weight_mg = rnorm(30, mean = 50, sd = 10),
-#  var_dry_weight_mg = rnorm(30, mean = 20, sd = 5)
-#)
+write_delim(all_pairwise_results,"../results/all_pairwise_results.tsv",delim="\t")
 
-# Group and nest the data
-#nested_data <- data %>%
-#  group_by(batch_id) %>%
-#  nest() |>
-#  mutate(
-#    # Identify all "var" columns
-#    vars = map(data, ~ select(.x, starts_with("var")) %>% colnames()),
-#  )
+control_pairwise_sig <- all_pairwise_results |>
+    filter(grepl("Control",tukey_contrast)) |>
+    filter(tukey_adj.p.value < 0.1) |>
+    mutate(microbe_id=gsub("^.*-","",tukey_contrast)) |>
+    filter(!grepl("Control",microbe_id))
 
-## debugging
-##
+write_delim(control_pairwise_sig,"../results/control_pairwise_sig_microbes.tsv",delim="\t")
