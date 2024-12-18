@@ -1,0 +1,77 @@
+microbe_id	BOX_glycerol_stocks	PROJECT	StrainName	MEDIUM	Tissue	host_plant	Κωδικός Μαρκάκη	Number given for Bioassays	Phylum	scientificName_16S	ANI_similarity	Genus	Class	Salt Tolerance 2,5% NaCl	Salt Tolerance 5% NaCl	Salt Tolerance 7,5% NaCl	Salt Tolerance 10% NaCl	Salt Tolerance 12,5% NaCl	Salt Tolerance 15% NaCl	Salt Tolerance 17,5% NaCl	Maximum Salinity Tolerance (%)	INH zone against Ralstonia solanacearum (mm)	INH zone against Clavibacter michiganensis subsp. michiganensis (mm)	INH zone against Acidovorax citrulli (mm)	INH zone against Verticillium dahliae (%)	INH zone against Alternaria sp.  (%)	INH zone against Botrytis cinerea (%)	INH zone against Fusarium sp.  (%)	Whole Genome Sequencing	In planta test Arabidopsis thaliana VS salt	In planta test Solanum lycopersicum VS salt	In planta test VS V.dahliae	In planta PGP test in Arabidopsis	In planta Markakis	Motility Test
+003	E03	ELIA	K152S2 C4a	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Peribacillus frigoritolerans/ Peribacillus simplex	100	Peribacillus	Bacilli				NO																		No
+018	B06	ELIA	K149S5 C11	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Peribacillus frigoritolerans	100	Peribacillus	Bacilli																						-
+022	B07	ELIA	K149S5 C19	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Bacillus thuringiensis / Bacillus wiedmannii		Bacillus	Bacilli																						No
+033	B08	ELIA	K152S3 C24	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Lysinibacillus fusiformis	100	Lysinibacillus					NO																		No
+086	F09	ELIA	K149S1 C7	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Proteobacteria	Cupriavidus campinensis	99.83	Cupriavidus	Betaproteobacteria																						-
+094	B09	ELIA	K149S3 C5	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Paenibacillus xylanilyticus	100	Paenibacillus	Bacilli																						-
+097	E04	ELIA	K149S4 C1	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Peribacillus frigoritolerans / Peribacillus muralis	100	Peribacillus	Bacilli																						-
+129	G01	ELIA	K152S5 C4	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Priestia aryabhattai/Priestia megaterium	100	Priestia	Bacilli	YES	YES	YES	YES	NO	NO	NO	10,0														-
+139	Β01	ELIA	K469S2 C7	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Oceanobacillus species	99.02	Oceanobacillus	Bacilli																						-
+144	E05	ELIA	K469S5 C2	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Priestia megaterium / Priestia aryabhattai		Priestia	Bacilli	YES	YES	YES	YES	NO	NO	NO	10,0														-
+156	IA1	ELIA	K152S10_CS10	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)	Nutrient Agar	Ριζικό σύστημα	Firmicutes	Brevibacillus brevis	100	Brevibacillus	Bacilli																						
+166	E06	ELIA	K152S11_CS21	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Bacteroidetes	Cloacibacterium normanense	100	Cloacibacterium	Flavobacteriia																						-
+175	A01	ELIA	K152S10_CS16	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Actinobacteria	Kocuria rosea	99.31	Kocuria	Micrococcales																						-
+184	G02	ELIA	K152S11_CS36	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Proteobacteria	Azorhizophilus paspali	99.91	Azorhizophilus	Gammaproteobacteria																						-
+186	A08	ELIA	K152S11_CS46	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Proteobacteria	Burkholderia graminis	99.9	Burkholderia	Betaproteobacteria																						-
+190	Η03	ELIA	K152S12_CS20	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Bacillus cucumis	100	Bacillus	Bacilli																						-
+197	G04	ELIA	K152S11_CS40	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Paenibacillus agarexedens	100	Paenibacillus	Bacilli																						-
+200	G05	ELIA	K152S12_CS21	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Paenibacillus sacheonensis	100	Paenibacillus	Bacilli																						-
+203	G06	ELIA	K152S12_CS23	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Actinobacteria	Murinocardiopsis flavida	100	Murinocardiopsis	Actinomycetales																						-
+204	A02	ELIA	K152S10_CS2	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Brevibacillus brevis	100	Brevibacillus	Bacilli																						-
+210	A03	ELIA	MIES01_CS7	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Proteobacteria	Pseudomonas brassicacearum	99.9	Pseudomonas	Gammaproteobacteria																						-
+227	C02	ELIA	MIES03_CS14	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Paenibacillus lautus	99.3	Paenibacillus	Bacilli																						-
+234	A05	ELIA	MIES01_CS44	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Proteobacteria	Pseudomonas frederiksbergensis	100	Pseudomonas	Gammaproteobacteria																						-
+242	IA2	ELIA	MIES03_CS4	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)	Bacillus niacini 	100%	Firmicutes	Bacillus niacini 	100	Bacillus	Bacilli																						
+243	C03	ELIA	MIES03_CS10	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Paenibacillus dendritiformis	99.6	Paenibacillus	Bacilli																						-
+247	C04	BIOCONTROL	S06a1a	Nutrient Agar	Root	Euphorbia paralias	SAR5	97		Agrobacterium sp.	100	Agrobacterium		YES	YES	YES	YES	YES	NO	NO	12,5	NO	4	-	42,42	37,50	15,79	27,27		Final	Final	YES	Initial testing batch 1	V.d.+SAR5, P.i.+SAR5	-
+248	C05	HALO	MTR17h	Nutrient Agar	Root	Matthiola tricuspidata		126	Ascomycota (division)	Debaryomyces hansenii var. hansenii	100	Debaryomyces	Saccharomycetes	YES	YES	YES	YES	YES	NO	NO	12,5	NO	-	-											-
+253	A06	BIOCONTROL	S06b1	R2A	Root	Euphorbia paralias	SAR12	128	Proteobacteria	Rhizobium pakistanense	100	Rhizobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	8	-	10,14	10,61	-11,43	10,61							-
+263	A07	BIOCONTROL	S06b6a	R2A	Root	Euphorbia paralias	SAR22	135	Proteobacteria	Sinorhizobium meliloti	99.72	Sinorhizobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	2	-	21,74	15,15	12,86	34,85							-
+272	G07	BIOCONTROL	S09b7	R2A	Root	Frankenia sp.	SAR31	114	Actinobacteria	Streptomyces spinoverrucosus	99.64	Streptomyces	Actinomycetia	YES	YES	NO	NO	NO	NO	NO	5,0	NO	-	-	18,84	3,03	8,57	4,55		Batch 5					No
+273	A09	BIOCONTROL	S06c10	Nutrient Agar 1/2	Root	Euphorbia paralias	SAR32	140	Proteobacteria	Pseudoxanthomonas wuyuanensis strain DY-R13	99.11	Pseudoxanthomonas	Gammaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	36,36	50,00	18,42	0,00							No
+286	G08	BIOCONTROL	S07a7	Nutrient Agar	Root	Tetraena alba	SAR45	124	Actinobacteria	Streptomyces xantholiticus strain TG33	80.90/75.88	Streptomyces	Actinomycetia	YES	YES	YES	NO	NO	NO	NO	7,5	NO	-	-	7,58	31,25	0,00	18,18		Batch 3	Complete test 1				No
+288	C06	ELIA	K149S5_C4b	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Bacillus velezensis/ subtilis / siamensis	100	Bacillus	Bacilli								MISSING														-
+289	G09	ELIA	MIES02_CS12a	Nutrient Agar	Root	Olea europaeae (cult. Koroneiki)			Firmicutes	Neobacillus niacini	100	Neobacillus	Bacilli								MISSING														-
+295	B02	BIOCONTROL	S07b1a	R2A	Root	Tetraena alba	SAR48	146	Proteobacteria	Sinorhizobium meliloti strain 201-17	99.71	Sinorhizobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	4,35	-3,03	-25,71	12,12							No
+297	B01	BIOCONTROL	S07b7	R2A	Root	Tetraena alba	SAR50	115	Hyphomicrobiales	Bosea vestrisii 34635	99.9	Bosea	Alphaproteobacteria	NO	NO	NO	NO	NO	NO	NO	0,5	NO	-	-	10,14	9,09	7,14	3,03							No
+299	A04	BIOCONTROL	S07c4	Nutrient Agar 1/2	Root	Tetraena alba	SAR52	118	Proteobacteria	Sinorhizobium meliloti Y21	Bad Seq	Sinorhizobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	2,90	7,58	-42,86	18,18							No
+300	IA3	BIOCONTROL	S07c2a	Nutrient Agar 1/2	Root	Tetraena alba	SAR53	119	Hyphomicrobiales	Bosea vestrisii 34635	VERY BAD SEQ	Bosea	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	4	-	21,74	12,12	-11,43	0,00							No
+302	H01	BIOCONTROL	S04a6	Nutrient Agar	Root	Tetraena alba	SAR55	176	Actinobacteria	Streptomyces sp. Z423-1	99.5	Streptomyces	Actinomycetia	YES	YES	YES	YES	YES	YES	NO	15,0	NO	8	-	28,00	57,50	10,81	20,78		Batch 2	Complete test part 1	YES	Initial testing batch 2		Yes
+305	E07	BIOCONTROL	S04a8b	Nutrient Agar	Root	Tetraena alba	SAR58	149	Proteobacteria	Rhizobium sp. LC445	100	Rhizobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	10	-	15,94	3,03	-14,29	6,06							No
+307	H08	BIOCONTROL	S04a3a	Nutrient Agar	Root	Tetraena alba	SAR60	94	Bacteroidetes	Olivibacter soli Gsoil034	100	Olivibacter	Sphingobacteriia	YES	YES	NO	NO	NO	NO	NO	5,0	NO	-	-	39,39	50,00	11,84	22,73		Batch 4			Initial testing batch 1	V.d.+SAR60	Yes
+309	E08	BIOCONTROL	S04b1	R2A	Root	Tetraena alba	SAR1	151	Proteobacteria	Pseudomonas frederiksbergensis strain KBL43	99.37	Pseudomonas	Gammaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	4	24,64	15,15	-7,14	25,76							-
+323	E09	BIOCONTROL	S03c2	Nutrient Agar 1/2	Root	Teucrium capitatum	SAR75	158	Proteobacteria	Neorhizobium alkalisoli isolate 1110TES10J6	99	Neorhizobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	17,39	59,09	-10,00	15,15							No
+324	F01	BIOCONTROL	S03c9	Nutrient Agar 1/2	Root	Teucrium capitatum	SAR76	159	Proteobacteria	Novosphingobium barchaimii LL02	100	Novosphingobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	33,33	13,64	-17,14	-21,21							-
+343	F02	BIOCONTROL	S10c3	Nutrient Agar 1/2	Root	Atriplex halimus	SAR92	107	Proteobacteria	Neorhizobium alkalisoli 1110TES10J6	99.58	Neorhizobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	13,04	22,73	-28,57	6,06							Yes
+345	F03	BIOCONTROL	S02la1	Nutrient Agar	Leaves	Thymus capitatus	SAR162	41	Firmicutes	Brevibacillus choshinensis strain TY1	99.9	Brevibacillus	Bacilli	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	11,43	-28,57	-2,63	15,71							-
+347	C07	BIOCONTROL	S03lc1	Nutrient Agar 1/2	Leaves	Teucrium capitatum	SAR160	43	Ascomycota	Metschnikowia sp.	100	Metschnikowia		YES	YES	YES	NO	NO	NO	NO	7,5	NO	-	-	42,86	2,86	10,53	31,43		Batch 3	Complete test 1			, V.d.+SAR160, P.i.+SAR160, F.o.r.c+SAR160	-
+348	B03	BIOCONTROL	S02a4b1	Nutrient Agar	Root	Thymus capitatus	SAR93	85	Proteobacteria	Neorhizobium alkalisoli isolate 1110TES10J6	99.2	Neorhizobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	2	-	9,09	47,50	13,16	6,06							No
+356	B04	BIOCONTROL	S03b2c1a	R2A	Root	Teucrium capitatum	SAR139	1	Actinobacteria	Microbacterium arthrosphaerae bac3	98	Microbacterium	Micrococcales	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	7,14	-14,29	-13,16	-2,86							No
+367	IA4	BIOCONTROL	S06lc9	Nutrient Agar 1/2	Leaves	Euphorbia paralias	SAR110	53	Firmicutes	Staphylococcus hominis strain OA272	99.91	Staphylococcus	Bacilli	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	17,33	9,09	22,97	22,08							No
+378	F04	BIOCONTROL	S04la5	Nutrient Agar	Leaves	Tetraena alba	SAR117	59	Proteobacteria	Neorhizobium alkalisoli isolate 1110TES10J6	99.9	Neorhizobium	Alphaproteobacteria	YES	NO	NO	NO	NO	NO	NO	2,5	NO	-	-	10,67	-21,21	29,73	11,69							No
+534	F05	HALO	CrR06	Nutrient Agar	Root	Crithmum maritimum			Actinobacteria	Glutamicibacter halophytocola		Glutamicibacter	Micrococcales	-	YES	YES	YES	-	NO	NO	10,0	2	NO	-	2	-	-	-	Illumina						
+540	IA5	HALO	CrR12	Nutrient Agar	Root	Crithmum maritimum	Pseudomonas glareae 	98%	Proteobacteria	Pseudomonas glareae 	98.26	Pseudomonas	Gammaproteobacteria																						
+550	F06	HALO	CrR22	Nutrient Agar	Root	Crithmum maritimum			Firmicutes	Agrobacterium salinitolerans	99.42	Bacillus	Bacilli	-	YES	YES	YES	-	YES	NO	15	NO	NO	-	1	-	-	-		Arabidopsis thaliana vs SALT					-
+552	C08	HALO	CrR24	Nutrient Agar	Root	Crithmum maritimum			Proteobacteria	Erwinia endophytica	99.6	Erwinia	Gammaproteobacteria	-	NO	NO	NO	-	NO	NO	0,5	2	2	-	NO	-	-	-							
+558	F07	HALO	CrL06	Nutrient Agar	Leaves	Crithmum maritimum			Firmicutes	Paenibacillus amylolyticus	99.6	Paenibacillus	Bacilli	-	YES	NO	NO	-	NO	NO	5,0	NO	2	-	NO	-	-	-							-
+574	C09	HALO	CMR07	Nutrient Agar	Root	Cakile maritima			Proteobacteria	Pantoea dispersa	100	Pantoea	Gammaproteobacteria	-	YES	YES	NO	-	NO	NO	7,5	NO	NO	-	NO	-	-	-							-
+605	D01	HALO	MTR06	Nutrient Agar	Root	Matthiola tricuspidata			Proteobacteria	Pantoea wallisii	100	Pantoea	Gammaproteobacteria	-	NO	NO	NO	-	NO	NO	0,5	NO	NO	-	2	-	-	-							-
+606	D02	HALO	MTR07	Nutrient Agar	Root	Matthiola tricuspidata			Actinobacteria	Arthrobacter ruber	100	Arthrobacter	Micrococcales	-	YES	YES	NO	-	NO	NO	7,5	NO	NO	-	2	-	-	-							-
+609	D03	HALO	MTR10	Nutrient Agar	Root	Matthiola tricuspidata			Actinobacteria	Arenivirga flava	100	Arenivirga	Micrococcales	-	YES	NO	NO	-	NO	NO	5,0	NO	NO	-	NO	-	-	-							-
+614	D04	HALO	MTR15	Nutrient Agar	Root	Matthiola tricuspidata			Actinobacteria	Arthrobacter humicola	100	Arthrobacter	Micrococcales	-	YES	YES	NO	-	NO	NO	7,5	NO	NO	-	2	-	-	-							-
+620	D05	HALO	MTR21	Nutrient Agar	Root	Matthiola tricuspidata			Actinobacteria	Paenarthrobacter nitroguajacolicus	100	Paenarthrobacter	Micrococcales	-	5	NO	NO	-	NO	NO	5,0	1	NO	-	3	-	-	-							-
+621	D06	HALO	MTR22	Nutrient Agar	Root	Matthiola tricuspidata			Proteobacteria	Ensifer meliloti	100	Ensifer	Betaproteobacteria	-	5	NO	NO	-	NO	NO	5,0	NO	NO	-	1	-	-	-							-
+623	D07	HALO	MTR24	Nutrient Agar	Root	Matthiola tricuspidata			Actinobacteria	Agrococcus versicolor	100	Agrococcus	Micrococcales	-	YES	YES	NO	-	NO	NO	7,5	NO	NO	-	3	-	-	-							-
+624	D08	HALO	MTR25	Nutrient Agar	Root	Matthiola tricuspidata			Proteobacteria	Shinella kummerowiae		Shinella	Alphaproteobacteria	-	5	NO	NO	-	NO	NO	5,0	NO	NO	-	2	-	-	-							-
+628	D09	HALO	MTR29	Nutrient Agar	Root	Matthiola tricuspidata			Actinobacteria	Brachybacterium phenoliresistens	100	Brachybacterium	Micrococcales	-	YES	YES	YES	-	NO	NO	10,0	NO	NO	-	NO	-	-	-							-
+630	E01	HALO	MTL02	Nutrient Agar	Leaves	Matthiola tricuspidata			Firmicutes	Planomicrobium okeanokoites	99.3	Planomicrobium	Bacilli	-	YES	YES	YES	-	NO	NO	10,0	NO	NO	-	2	-	-	-							-
+636	F08	Manolis Markakis	ELGO.1	Nutrient Agar	Root	Vitis vinifera			Firmicutes	Oceanibacillus sp.		Oceanibacillus	Bacilli	-												-	-	-							-
+636a	IA6																																		
+636b	IA7																																		
+740	H04	CAVE		Nutrient Agar		Gourgouthakas Cave																													
+742	H05	CAVE		Nutrient Agar		Gourgouthakas Cave																													
+871	Η09	CAVE		Nutrient Agar	C2	Gourgouthakas Cave				Brevibacillus laterosporus strain SGNB1/Brevibacillus laterosporus strain IHBB 9233/Brevibacillus laterosporus strain ZLB158/Brevibacillus laterosporus strain HY6	99.68	Brevibacillus	Bacilli																						
+1020	H06	CAVE		Nutrient Agar		Gourgouthakas Cave				Nocardia sp		Nocardia																							
+1060	H07	CAVE		Nutrient Agar		Gourgouthakas Cave																													
+1212	B05	NA	OP50	Nutrient Agar		NA				E.coli OP50																									

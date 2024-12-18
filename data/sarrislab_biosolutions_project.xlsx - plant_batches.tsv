@@ -1,0 +1,175 @@
+batch_id	date_old	date	action	value	Comments
+1			condition	water deficit	H κατανομη στα bathes, γινεται με βάση το plant seeds, όσα έχουν την ίδια ημερομηνία φυτευσης χρησιμοποιείται το inoculation day 
+1			scientist	christos	
+1			plant_chamber	aralab	
+1			irrigation_frequency_	0	
+1			final_irrigation_volume_(ml)	0	
+1			irrigation_volume/irrigation	0	
+1			irrigation_number	0	
+1	20/9/2023	 2023-09-20	plant_seeds		
+1	20/10/2023	 2023-10-20	inoculation		
+1	3/11/2023	 2023-11-03	wet_mass_measurement		
+1	8/1/2024	 2024-01-08	dry_mass_measurement	66	
+2			condition	water deficit	
+2			scientist	christos	
+2			plant_chamber	aralab	
+2			irrigation_frequency_	0	
+2			final_irrigation_volume_(ml)	0	
+2			irrigation_volume/irrigation	0	
+2			irrigation_number	0	
+2	20/9/2024	 2023-09-20	plant_seeds		
+2	20/10/2023	 2023-10-20	inoculation		
+2	6/11/2024	 2023-11-06	wet_mass_measurement		
+2	9/1/2024	 2024-01-09	dry_mass_measurement	64	
+3			condition	pgp	
+3			scientist	nektaria	
+3			plant_chamber	aralab	
+3			irrigation_frequency_	daily 	
+3			final_irrigation_volume_(ml)	20	
+3			irrigation_volume/irrigation	3_daily_one_second_day	
+3			irrigation_number	4	
+3	10/1/2024	 2024-01-10	plant_seeds		
+3	13/2/2024	 2024-02-13	inoculation	34	
+3	22/2/2024	 2024-02-22	wet_mass_measurement	9	
+3	2/4/2024	 2024-04-02	dry_mass_measurement	40	
+4			condition	nacl	
+4			scientist	nektaria	
+4			plant_chamber	aralab	
+4			irrigation_frequency_	10_times_daily_3_times_every_third_day	
+4			final_irrigation_volume_(ml)	165	
+4			irrigation_volume/irrigation	8(10)_3(15)_2(20)	
+4			irrigation_number	13	
+4	16/1/2024	 2024-01-16	plant_seeds		
+4	20/2/2024	 2024-02-20	inoculation	35	
+4	13/3/2024	 2024-03-13	wet_mass_measurement	22	
+4	23/4/2024	 2024-04-23	dry_mass_measurement	41	
+5			condition	nacl	
+5			scientist	nektaria	
+5			plant_chamber	aralab	
+5			irrigation_frequency_	6_times_daily_6_times_every_second_day	
+5			final_irrigation_volume_(ml)	125	
+5			irrigation_volume/irrigation	1(5)_9(10)_2(15)	
+5			irrigation_number	12	
+5	27/3/2024	 2024-03-27	plant_seeds		
+5	26/4/2024	 2024-04-26	inoculation	30	
+5	20/5/2024	 2024-05-20	wet_mass_measurement	24	
+5	12/6/2024	 2024-06-12	dry_mass_measurement	22-23	
+6			condition	water deficit	
+6			scientist	nektaria	
+6			plant_chamber	conviron	
+6			irrigation_frequency_		
+6			final_irrigation_volume_(ml)		
+6			irrigation_volume/irrigation		
+6			irrigation_number		
+6	28/3/2024	 2024-03-28	plant_seeds		
+6	28/4/2024	 2024-04-28	inoculation	31	
+6	28/5/2024	 2024-05-28	wet_mass_measurement	30	
+6	10/6/2024	 2024-06-10	dry_mass_measurement	13	
+7			condition	pgp	
+7			scientist	nektaria	
+7			plant_chamber	aralab	
+7			irrigation_frequency_	3_times_daily_2_times_every_second_day	
+7			final_irrigation_volume_(ml)	34	
+7			irrigation_volume/irrigation	2(5)_2(7)_1(10)	
+7			irrigation_number	5	
+7	29/5/2024	 2024-05-29	plant_seeds		
+7	25/6/2024	 2024-06-25	inoculation	27	
+7	11/7/2024	 2024-07-11	wet_mass_measurement	16	
+7	2/9/2024	 2024-09-02	dry_mass_measurement	53	
+8			condition	pgp	
+8			scientist	nektaria	
+8			plant_chamber	common aralab	
+8			irrigation_frequency_	2_times_daily_2_times_every_second_day	
+8			final_irrigation_volume_(ml)	34	
+8			irrigation_volume/irrigation	1(5)_2(7)_1(15)	
+8			irrigation_number	4	
+8	29/5/2024	 2024-05-29	plant_seeds		
+8	27/6/2024	 2024-06-27	inoculation	29	
+8	10/7/2024	 2024-07-10	wet_mass_measurement	13	
+8	2/9/2024	 2024-09-02	dry_mass_measurement	54	
+9			condition	water deficit	
+9			scientist	nektaria	
+9			plant_chamber	common aralab	
+9			irrigation_frequency_	0	
+9			final_irrigation_volume_(ml)	0	
+9			irrigation_volume/irrigation	0	
+9			irrigation_number	0	
+9	29/5/2024	 2024-05-29	plant_seeds		
+9	27/6/2024	 2024-06-27	inoculation	29	
+9	10/7/2024	 2024-07-10	wet_mass_measurement	13	
+9	2/9/2024	 2024-09-02	dry_mass_measurement	54	
+10			condition	pgp	
+10			scientist	nektaria, eva	
+10			plant_chamber	aralab	
+10			irrigation_frequency_	8 times every other day and twice daily	
+10			final_irrigation_volume_(ml)	110 ml	
+10			irrigation_volume/irrigation	1(5)_5(10)_4(15)	
+10			irrigation_number	10	
+10	4/9/2024	 2024-09-04	plant_seeds		
+10	4/10/2024	 2024-10-04	inoculation	30	
+10	24/10/24	 2024-10-24	wet_mass_measurement	20	
+10	3/12/2024	 2024-12-03	dry_mass_measurement	40	
+11			condition	nacl	
+11			scientist	nektaria, eva	
+11			plant_chamber	aralab	
+11			irrigation_frequency_	3 daily_1 every second/third/fourth day	
+11			final_irrigation_volume_(ml)	110 ml	
+11			irrigation_volume/irrigation		
+11			irrigation_number		
+11	4/9/2024	 2024-09-04	plant_seeds		
+11	14/10/2024	 2024-10-14	inoculation	40	
+11	1/11/2024	 2024-11-01	wet_mass_measurement	18	
+11	11/12/2024	 2024-12-11	dry_mass_measurement	40	
+12			condition	water deficit	
+12			scientist	nektaria	
+12			plant_chamber	common aralab	
+12			irrigation_frequency_		
+12			final_irrigation_volume_(ml)		
+12			irrigation_volume/irrigation		
+12			irrigation_number		
+12	4/9/2024	 2024-09-04	plant_seeds		
+12	16/10/2024	 2024-10-16	inoculation	42	
+12	23/10/2024	 2024-10-23	wet_mass_measurement	7	
+12	2/12/2024	 2024-12-02	dry_mass_measurement	40	
+13			condition	water deficit	
+13			scientist	nektaria, eva	
+13			plant_chamber	common aralab	
+13			irrigation_frequency_		
+13			final_irrigation_volume_(ml)		
+13			irrigation_volume/irrigation		
+13			irrigation_number		
+13	25/10/2024	 2024-10-25	plant_seeds		
+13	26/11/2024	 2024-11-26	inoculation		
+13			wet_mass_measurement		
+13			dry_mass_measurement		
+14			condition	nacl	
+14			scientist	nektaria, eva	
+14			plant_chamber	aralab	
+14			irrigation_frequency_		
+14			final_irrigation_volume_(ml)		
+14			irrigation_volume/irrigation		
+14			irrigation_number		
+14	25/10/2024	 2024-10-25	plant_seeds		
+14	26/11/2024	 2024-11-26	inoculation		
+14			wet_mass_measurement		
+14			dry_mass_measurement		
+15			condition	pgp	
+15			scientist	nektaria, eva	
+15			plant_chamber	aralab	
+15			irrigation_frequency_		
+15			final_irrigation_volume_(ml)		
+15			irrigation_volume/irrigation		
+15			irrigation_number		
+15	25/10/2024	 2024-10-25	plant_seeds		
+15	26/11/24	 2024-11-26	inoculation		
+15			wet_mass_measurement		
+15			dry_mass_measurement		
+16			plant_seeds		
+			condition	pathogen_infection	
+			scientist	stefanos	
+17			plant_seeds		
+			condition	pathogen_infection	
+			scientist	stefanos	
+18			plant_seeds		
+			condition	pathogen_infection	
+			scientist	stefanos	
