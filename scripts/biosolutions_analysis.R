@@ -13,24 +13,25 @@
 ## Date Created: 2024-11-14
 ##
 library(tidyverse)
-library(readxl)
+library(dunn.test)
 #library(vegan)
 
 # load data
 
-pgp_data <- read_delim("../data/sarrislab_biosolutions_project.xlsx - pgp_experiment.tsv",
+pgp_data <- read_delim("../data/sarrislab_biosolutions_project - pgp_experiment.tsv",
                        na=c("","NA"),
                        delim="\t")
-nacl_data <- read_delim("../data/sarrislab_biosolutions_project.xlsx - nacl_experiment.tsv",
+nacl_data <- read_delim("../data/sarrislab_biosolutions_project - nacl_experiment.tsv",
                        na=c("","NA"),
                        delim="\t")
-water_deficit_data <- read_delim("../data/sarrislab_biosolutions_project.xlsx - water_deficit_experiment.tsv",
+water_deficit_data <- read_delim("../data/sarrislab_biosolutions_project - water_deficit_experiment.tsv",
                        na=c("","NA"),
                        delim="\t")
 
-microbes <- read_delim("../data/sarrislab_biosolutions_project.xlsx - microbes.tsv", delim="\t")
+## add the final file with correct data for microbes
+#microbes <- read_delim("../data/sarrislab_biosolutions_project.xlsx - microbes.tsv", delim="\t")
 
-plant_batches <- read_delim("../data/sarrislab_biosolutions_project.xlsx - plant_batches.tsv", delim="\t")
+plant_batches <- read_delim("../data/sarrislab_biosolutions_project - plant_batches.tsv", delim="\t")
 
 
 # microbe ids from the first report
@@ -67,7 +68,7 @@ microbes_batches_summary <- all_experiments |>
 ids[!(ids %in% unique(all_experiments$microbe_id))] 
 
 # microbes from the updated list of microbes not in ids from report
-microbes_not_in_biosolutions <- microbes[!(microbes$microbe_id %in% ids),]
+#microbes_not_in_biosolutions <- microbes[!(microbes$microbe_id %in% ids),]
 
 
 ## Normalisation
@@ -211,3 +212,24 @@ control_pairwise_sig <- all_pairwise_results |>
     filter(!grepl("Control",microbe_id))
 
 write_delim(control_pairwise_sig,"../results/control_pairwise_sig_microbes.tsv",delim="\t")
+
+# filter the pairwise only if they are significant and higher than the control of
+# each batch and variable
+
+sig_mic <- unique(control_pairwise_sig$microbe_id)
+sig_batch_id <- unique(control_pairwise_sig$batch_id)
+
+sig_batch <- all_experiments_stats |>
+    filter(microbe_id=="Control") |>
+    filter(batch_id %in% sig_batch_id)
+
+sig_microbe <- 
+
+for (i in seq_along()){
+    print(i)
+
+
+}
+######
+
+
