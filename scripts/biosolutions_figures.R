@@ -27,6 +27,7 @@ stats_results_anova <- read_delim("../results/stats_results_anova.tsv",delim="\t
 stats_results_kruskal <- read_delim("../results/stats_results_kruskal.tsv",delim="\t")
 
 control_pairwise_sig <- read_delim("../results/control_pairwise_sig_microbes.tsv",delim="\t")
+all_experiments_tukey_sig <- read_delim("../results/all_experiments_tukey_sig.tsv",delim="\t")
 
 ### transform to long format
 all_experiments_stats_l <- all_experiments_stats |>
@@ -67,7 +68,7 @@ all_experiments_norm_no_control <- all_experiments_norm |>
                 names_from = variable,
                 values_from = percent_change
                 ) |>
-    filter(!(microbe_id %in% c("Control","Control+", "E. coli"))
+    filter(!(microbe_id %in% c("Control","Control+", "E. coli")))
 
 
 ## Figures
@@ -324,7 +325,7 @@ batch_plot <- ggplot(data=plant_batches_l)+
     scale_x_date(
         date_breaks = "1 month",                # Breaks every month
         date_labels = "%m, %Y",
-        limits=as.Date(c("2023-09-01","2025-02-01"))
+        limits=as.Date(c("2023-09-01","2025-05-01"))
         ) +
     labs(
         title = "Gantt Chart of in planta experiments",
@@ -421,13 +422,12 @@ plant_batch_sig_fig <- ggplot() +
            units="cm",
            device="png")
 
-### significant pairwise microbes
+### significant pairwise microbes with values higher than control
 plant_batch_c <- plant_batches_l |>
     distinct(batch_id,condition)
 
-control_pairwise_sig_sum <- control_pairwise_sig |>
-    distinct(microbe_id,batch_id,tukey_variable, tukey_adj.p.value) |>
-    rename("variable"="tukey_variable") |>
+control_pairwise_sig_sum <- all_experiments_tukey_sig |>
+    distinct(microbe_id,batch_id, variable, tukey_adj.p.value) |>
     left_join(plant_batch_c) |> 
     mutate(
            significance = case_when(

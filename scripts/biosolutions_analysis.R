@@ -89,6 +89,35 @@ all_experiments_stats <- all_experiments |>
 
 write_delim(all_experiments_stats,"../results/all_experiments_stats.tsv",delim="\t")
 
+all_experiments_mean_l <- all_experiments_stats |>
+    dplyr::select(microbe_id,
+                  batch_id,
+                  condition,
+                  contains("mean")) |>
+    pivot_longer(
+        cols = contains("mean"),  # Select columns with "mean" in their names
+        names_to = "variable",    # Create a column for variable names
+        values_to = "value")       # Create a column for the value
+
+
+# Calculate percentage change
+all_experiments_norm <- all_experiments_mean_l |>
+    group_by(batch_id,variable) |>
+    mutate(control_value = value[microbe_id == "Control"], #Extract control value
+         percent_change = ((value - control_value) / control_value) * 100,
+         difference_value = value - control_value) |>
+  ungroup() |>
+  select(-control_value) # Optional: Remove intermediate control_value column
+
+all_experiments_norm_no_control <- all_experiments_norm |>
+    select(-value) |>  # Remove the original value column
+    pivot_wider(
+                names_from = variable,
+                values_from = percent_change
+                ) |>
+    filter(!(microbe_id %in% c("Control","Control+", "E. coli")))
+
+
 ########################### plant batches ##########################
 ##
 
@@ -198,7 +227,6 @@ stats_results_anova <- all_stats_results |>
 
 write_delim(stats_results_anova,"../results/stats_results_anova.tsv",delim="\t")
 
-
 ####################### Post hoc test against the control ######################
 
 all_pairwise_results <- bind_rows(pairwise_stats) |> distinct()
@@ -213,23 +241,20 @@ control_pairwise_sig <- all_pairwise_results |>
 
 write_delim(control_pairwise_sig,"../results/control_pairwise_sig_microbes.tsv",delim="\t")
 
-# filter the pairwise only if they are significant and higher than the control of
-# each batch and variable
+#filter the pairwise only if they are significant and higher than the control of
+#each batch and variable
 
-sig_mic <- unique(control_pairwise_sig$microbe_id)
-sig_batch_id <- unique(control_pairwise_sig$batch_id)
+all_experiments_tukey_sig <- all_experiments_norm |> 
+    filter(percent_change > 0) |>
+    mutate(variable=gsub("_mean","",variable)) |>
+    inner_join(control_pairwise_sig,
+               by=c("variable"="tukey_variable",
+                    "microbe_id"="microbe_id",
+                    "batch_id"="batch_id")
+    )
 
-sig_batch <- all_experiments_stats |>
-    filter(microbe_id=="Control") |>
-    filter(batch_id %in% sig_batch_id)
+write_delim(all_experiments_tukey_sig,"../results/all_experiments_tukey_sig.tsv",delim="\t")
 
-sig_microbe <- 
-
-for (i in seq_along()){
-    print(i)
-
-
-}
 ######
 
 
