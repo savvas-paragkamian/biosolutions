@@ -287,7 +287,7 @@ for (i in seq_along(conditions)) {
                                                  hjust = 1,
                                                  size = 11)
                 )+
-                facet_wrap(~variable, ncol=1, nrow=9,scales="free" )
+                facet_wrap(~variable, ncol=1, nrow=10,scales="free" )
     
     ggsave(paste0("../figures/","batch_controls_",conditions[i],"_boxplot.png"),
            plot=fig_controls, 

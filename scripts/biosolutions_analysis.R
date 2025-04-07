@@ -43,7 +43,9 @@ ids <- c("378", "295", "247", "620", "614", "253", "305", "323", "345", "094",
          "606", "609", "621", "623", "624", "628", "740", "742", "1020", "1060")
 
 ## Combine all data from experiments
-all_experiments <- bind_rows(pgp_data,nacl_data,water_deficit_data)
+all_experiments <- bind_rows(pgp_data,nacl_data,water_deficit_data) |>
+    mutate(var_rosette_healthy_leaves= (var_rosette_leaves - var_dry_rosette_leaves)/var_rosette_leaves)
+
 all_experiments$microbe_id <- gsub('"', '', all_experiments$microbe_id)
 
 write_delim(all_experiments,"../results/all_experiments_data.tsv",delim="\t")
@@ -188,7 +190,8 @@ for (i in seq_along(variables)) {
     print(reformulate("microbe_id", variables[i]))
 # Perform tests the var i
     asasa <- nested_data |>
-        mutate(anova=map(
+        mutate(
+               anova=map(
                       data, ~ broom::tidy(aov(reformulate("microbe_id", variables[i]),
                                               data = .x)) %>% mutate(variable = variables[i])),
                kruskal=map(
@@ -245,7 +248,7 @@ write_delim(control_pairwise_sig,"../results/control_pairwise_sig_microbes.tsv",
 #each batch and variable
 
 all_experiments_tukey_sig <- all_experiments_norm |> 
-    filter(percent_change > 0) |>
+    filter(if_else(variable==var_dry_rosette_leaves, percent_change < 0, percent_change > 0)) |>
     mutate(variable=gsub("_mean","",variable)) |>
     inner_join(control_pairwise_sig,
                by=c("variable"="tukey_variable",
@@ -257,4 +260,16 @@ write_delim(all_experiments_tukey_sig,"../results/all_experiments_tukey_sig.tsv"
 
 ######
 
+library(dunn.test)
+attach(airquality)
+dunn.test(Ozone, Month, kw=FALSE, method="bonferroni")
+dunn.test(Ozone, Month, kw=FALSE, method="hs")
+dunn.test(Ozone, Month, kw=FALSE, method="bh")
+
+
+kruskal_sig <- stats_results_kruskal |>
+    filter(kruskal_p.value < 0.05)
+dunn_data <- all_experiments |> 
+    filter(batch_id==3)
+dunn_tes <- dunn.test(all_experiments$var_fresh_weight_mg,all_experiments$microbe_id,  kw=T,method="bonferroni")
 
