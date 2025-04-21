@@ -237,7 +237,7 @@ all_pairwise_results <- bind_rows(pairwise_stats) |> distinct()
 write_delim(all_pairwise_results,"../results/all_pairwise_results.tsv",delim="\t")
 
 control_pairwise_sig <- all_pairwise_results |>
-    filter(grepl("Control",tukey_contrast)) |>
+    filter(grepl("Control-",tukey_contrast)) |>
     filter(tukey_adj.p.value < 0.1) |>
     mutate(microbe_id=gsub("^.*-","",tukey_contrast)) |>
     filter(!grepl("Control",microbe_id))
@@ -248,7 +248,7 @@ write_delim(control_pairwise_sig,"../results/control_pairwise_sig_microbes.tsv",
 #each batch and variable
 
 all_experiments_tukey_sig <- all_experiments_norm |> 
-    filter(if_else(variable==var_dry_rosette_leaves, percent_change < 0, percent_change > 0)) |>
+    filter(if_else(variable=="var_dry_rosette_leaves_mean", percent_change < 0, percent_change > 0)) |>
     mutate(variable=gsub("_mean","",variable)) |>
     inner_join(control_pairwise_sig,
                by=c("variable"="tukey_variable",
