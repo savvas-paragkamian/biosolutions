@@ -28,6 +28,10 @@ water_deficit_data <- read_delim("../data/sarrislab_biosolutions_project - water
                        na=c("","NA"),
                        delim="\t")
 
+synthetic_community <- read_delim("../data/sarrislab_biosolutions_project - synthetic_community_experiment.tsv",
+                       na=c("","NA"),
+                       delim="\t")
+
 ## add the final file with correct data for microbes
 #microbes <- read_delim("../data/sarrislab_biosolutions_project.xlsx - microbes.tsv", delim="\t")
 
@@ -43,7 +47,7 @@ ids <- c("378", "295", "247", "620", "614", "253", "305", "323", "345", "094",
          "606", "609", "621", "623", "624", "628", "740", "742", "1020", "1060")
 
 ## Combine all data from experiments
-all_experiments <- bind_rows(pgp_data,nacl_data,water_deficit_data) |>
+all_experiments <- bind_rows(pgp_data,nacl_data,water_deficit_data,synthetic_community) |>
     mutate(var_rosette_healthy_leaves= (var_rosette_leaves - var_dry_rosette_leaves)/var_rosette_leaves)
 
 all_experiments$microbe_id <- gsub('"', '', all_experiments$microbe_id)
@@ -111,14 +115,15 @@ all_experiments_norm <- all_experiments_mean_l |>
   ungroup() |>
   select(-control_value) # Optional: Remove intermediate control_value column
 
-all_experiments_norm_no_control <- all_experiments_norm |>
-    select(-value) |>  # Remove the original value column
+all_experiments_percent_change <- all_experiments_norm |>
+    select(-c(value,difference_value)) |>  # Remove the original value column
     pivot_wider(
                 names_from = variable,
                 values_from = percent_change
                 ) |>
     filter(!(microbe_id %in% c("Control","Control+", "E. coli")))
 
+write_delim(all_experiments_percent_change,"../results/all_experiments_percent_change.tsv",delim="\t")
 
 ########################### plant batches ##########################
 ##
