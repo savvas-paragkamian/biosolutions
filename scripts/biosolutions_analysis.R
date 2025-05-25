@@ -117,6 +117,7 @@ all_experiments_norm <- all_experiments_mean_l |>
 
 all_experiments_percent_change <- all_experiments_norm |>
     select(-c(value,difference_value)) |>  # Remove the original value column
+    mutate(percent_change=round(percent_change,2)) |>
     pivot_wider(
                 names_from = variable,
                 values_from = percent_change

@@ -176,15 +176,15 @@ for (b in seq_along(batches)) {
                              fill="white",
                              width = 0.6,
                              position = "identity")+
-                    geom_point(data=batch_data_a,
-                               mapping=aes(x = microbe_id,
-                                           y=!!sym(vars_a[i]),
-                                           color="mediumseagreen"),
-                               fill="mediumseagreen",
-                               shape = 21,
-                               alpha = 0.8,
-                               show.legend = F,
-                               position = position_jitterdodge(0.3))+
+#                    geom_point(data=batch_data_a,
+#                               mapping=aes(x = microbe_id,
+#                                           y=!!sym(vars_a[i]),
+#                                           color="mediumseagreen"),
+#                               fill="mediumseagreen",
+#                               shape = 21,
+#                               alpha = 0.8,
+#                               show.legend = F,
+#                               position = position_jitterdodge(0.3))+
                     #position_dodge(width = 0.82)) +
                     geom_errorbar(batch_data,
                                   mapping=aes(x= microbe_id,
@@ -381,6 +381,9 @@ plant_batch_stats_sig <- plant_batch_stats_anova |>
     bind_rows(plant_batch_stats_sig_k) |>
     mutate(midpoint = n_batches / 2)
 
+
+print(unique(plant_batch_stats_sig$condition))
+
 plant_batch_sig_fig <- ggplot() +
     geom_col(data=plant_batch_stats_sig,
              mapping=aes(y=variable,
@@ -469,8 +472,8 @@ microbe_heatmap <- ggplot()+
       theme_bw()+
       theme(
             panel.border=element_blank(),
-            panel.grid.major = element_blank(),
-            panel.grid.minor=element_blank(),
+#            panel.grid.major = element_blank(),
+#            panel.grid.minor=element_blank(),
             axis.text.x = element_text(face="bold",angle = 90, hjust = 0),
             axis.text.y = element_text(face="bold"),
             axis.text = element_text(size=13), 
