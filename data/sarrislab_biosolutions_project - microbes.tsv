@@ -1,0 +1,75 @@
+microbe_id	BOX_glycerol_stocks	host_sample	Plant tissue	Phylum	Class	Culture medium	Species_16s	Similarity to known strains 	reference_taxonomy	reference_genome	fastani_ani	fastani_af	satisfies_gtdb_circumscription_criteria
+003	E03	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Peribacillus frigoritolerans/ Peribacillus simplex	100.00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__DSM-1321;g__Peribacillus;s__Peribacillus frigoritolerans	GCF_001636405.1	97.5678	0.9120756817	TRUE
+018	B06	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Peribacillus frigoritolerans	100.00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Planococcaceae;g__Lysinibacillus;s__Lysinibacillus fusiformis	GCF_003049525.1	95.5221	0.8948051948	TRUE
+022	B07	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Bacillus thuringiensis / Bacillus wiedmannii	100.00%					
+033	B08	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Lysinibacillus fusiformis	100.00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Planococcaceae;g__Lysinibacillus;s__Lysinibacillus fusiformis	GCF_003049525.1	95.5524	0.8993506494	TRUE
+086	F09	Olea europaeae (cult. Koroneiki)	Root	Pseudomonadota	Betaproteobacteria	Nutrient Agar	Cupriavidus campinensis	100.00%					
+094	B09	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Paenibacillus xylanilyticus	100.00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Paenibacillales;f__Paenibacillaceae;g__Paenibacillus;s__Paenibacillus xylanilyticus	GCF_013359935.1	98.7836	0.8489238411	TRUE
+097	D05	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Peribacillus frigoritolerans / Peribacillus muralis	100.00%					
+129	G01	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Priestia aryabhattai/Priestia megaterium	100.00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Bacillaceae_H;g__Priestia;s__Priestia megaterium	GCF_000832985.1	98.6476	0.8871766648	TRUE
+139	Β01	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Priestia species	100.00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales_D;f__Amphibacillaceae;g__Oceanobacillus;s__Oceanobacillus profundus	GCF_003515705.1	91.72	0.784338896	FALSE
+144	E05	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Priestia megaterium / Priestia aryabhattai	100.00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Bacillaceae_H;g__Priestia;s__Priestia megaterium	GCF_000832985.1	98.7786	0.8747368421	TRUE
+156	IA1	Olea europaeae (cult. Koroneiki)	Root	Firmicutes			Brevibacillus brevis						
+166	E06	Olea europaeae (cult. Koroneiki)	Root	Bacteroidota	Flavobacteriia	Nutrient Agar	Cloacibacterium normanense	100,00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Bacillaceae_B;g__Rossellomorea;s__Rossellomorea marisflavi	GCF_001274775.1	95.3038	0.9267605634	TRUE
+175	A01	Olea europaeae (cult. Koroneiki)	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Kocuria rosea	100,00%	d__Bacteria;p__Actinomycetota;c__Actinomycetia;o__Actinomycetales;f__Micrococcaceae;g__Kocuria;s__Kocuria rosea	GCF_006094695.1	98.5266	0.8752851711	TRUE
+184	G02	Olea europaeae (cult. Koroneiki)	Root	Pseudomonadota	Gammaproteobacteria	Nutrient Agar	Azorhizophilus paspali	Bad Seq	d__Bacteria;p__Pseudomonadota;c__Gammaproteobacteria;o__Xanthomonadales;f__Xanthomonadaceae;g__Stenotrophomonas;s__Stenotrophomonas nematodicola	GCF_009467805.1	99.2834	0.9548341567	TRUE
+186	A08	Olea europaeae (cult. Koroneiki)	Root	Pseudomonadota	Betaproteobacteria	Nutrient Agar	Burkholderia graminis	99,86%	d__Bacteria;p__Pseudomonadota;c__Gammaproteobacteria;o__Burkholderiales;f__Burkholderiaceae;g__Paraburkholderia;s__Paraburkholderia graminis	GCF_000172415.1	98.2467	0.8603603604	TRUE
+190	Η03	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Bacillus cucumis	99,55%					
+197	G04	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Paenibacillus agarexedens	98,47%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Bacillaceae;g__Bacillus;s__Bacillus subtilis	GCF_000009045.1	98.0837	0.9172714078	TRUE
+200	G05	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Paenibacillus sacheonensis	99,27%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Bacillaceae;g__Bacillus;s__Bacillus subtilis	GCF_000009045.1	98.0914	0.9186637618	TRUE
+203	G06	Olea europaeae (cult. Koroneiki)	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Murinocardiopsis flavida	98,00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Bacillaceae;g__Bacillus;s__Bacillus subtilis	GCF_000009045.1	98.135	0.9171511628	TRUE
+204	A02	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Brevibacillus brevis	99,88%	d__Bacteria;p__Bacillota;c__Bacilli;o__Brevibacillales;f__Brevibacillaceae;g__Brevibacillus;s__Brevibacillus brevis_D	GCF_000010165.1	97.4047	0.9291338583	TRUE
+210	A03	Olea europaeae (cult. Koroneiki)	Root	Pseudomonadota	Gammaproteobacteria	Nutrient Agar	Pseudomonas brassicacearum	100,00%					
+227	C02	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Paenibacillus lautus	99,60%	d__Bacteria;p__Bacillota;c__Bacilli;o__Paenibacillales;f__Paenibacillaceae;g__Paenibacillus;s__Paenibacillus lautus_A	GCF_014863545.1	96.7555	0.9177025289	TRUE
+234	A05	Olea europaeae (cult. Koroneiki)	Root	Pseudomonadota	Gammaproteobacteria	Nutrient Agar	Pseudomonas frederiksbergensis	99,88%	d__Bacteria;p__Pseudomonadota;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas_E;s__Pseudomonas_E frederiksbergensis_A	GCF_000802155.2	95.3828	0.8840219014	TRUE
+242	I02	Olea europaeae (cult. Koroneiki)	Root	Firmicutes			Bacillus niacini						
+243	C03	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Paenibacillus dendritiformis	99,62%					
+247	C04	Euphorbia paralias	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar	Agrobacterium sp.						
+248	C05	Matthiola tricuspidata	Root	Ascomycota	Pichiomycetes	Nutrient Agar	Debaryomyces hansenii var. hansenii	99,83%					
+253	A06	Euphorbia paralias	Root	Pseudomonadota	Alphaproteobacteria	R2A	Rhizobium pakistanense	99,11%	d__Bacteria;p__Pseudomonadota;c__Alphaproteobacteria;o__Rhizobiales;f__Rhizobiaceae;g__Neorhizobium_B;s__Neorhizobium_B sp001005825	GCF_001005825.1	98.2089	0.8718898888	TRUE
+263	A07	Euphorbia paralias	Root	Pseudomonadota	Alphaproteobacteria	R2A	Sinorhizobium meliloti	100,00%	d__Bacteria;p__Pseudomonadota;c__Alphaproteobacteria;o__Rhizobiales;f__Rhizobiaceae;g__Sinorhizobium;s__Sinorhizobium meliloti_A	GCF_000375585.1	98.9243	0.8743529412	TRUE
+272	G07	Frankenia sp.	Root	Actinobacteria			Streptomyces spinoverrucosus						
+273	A09	Euphorbia paralias	Root	Pseudomonadota	Gammaproteobacteria	Nutrient Agar 1/2	Pseudoxanthomonas wuyuanensis strain DY-R13	99,37%					
+286	C08	Tetraena alba	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Streptomyces xantholiticus strain TG33	99,64%					
+288	C06	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Bacillus velezensis/ subtilis / siamensis	100,00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Bacillaceae;g__Bacillus;s__Bacillus velezensis	GCF_001461825.1	97.9612	0.9449056604	TRUE
+289	G09	Olea europaeae (cult. Koroneiki)	Root	Bacillota	Bacilli	Nutrient Agar	Neobacillus niacini	100,00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__DSM-18226;g__Neobacillus;s__Neobacillus sp002272245	GCF_002272245.1	84.8849	0.6470588235	FALSE
+295	B02	Tetraena alba	Root	Pseudomonadota	Alphaproteobacteria	R2A	Sinorhizobium meliloti strain 201-17	99,72%	d__Bacteria;p__Pseudomonadota;c__Alphaproteobacteria;o__Rhizobiales;f__Rhizobiaceae;g__Sinorhizobium;s__Sinorhizobium meliloti_A	GCF_000375585.1	99.0543	0.8808510638	TRUE
+297	C01	Tetraena alba	Root	Pseudomonadota	Alphaproteobacteria	R2A	Bosea vestrisii 34635	99,91%					
+299	A04	Tetraena alba	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar 1/2	Sinorhizobium meliloti Y21	99,71%					
+300	I03	Tetraena alba	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar 1/2	Bosea vestrisii 34635	98,32%					
+302	H01	Tetraena alba	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Streptomyces sp. Z423-1	100,00%					
+305	E07	Tetraena alba	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar	Rhizobium sp. LC445	100,00%					
+307	H08	Tetraena alba	Root	Bacteroidetes			Olivibacter soli Gsoil034						
+309	E08	Tetraena alba	Root	Pseudomonadota	Gammaproteobacteria	R2A	Pseudomonas frederiksbergensis strain KBL43	100,00%	d__Bacteria;p__Pseudomonadota;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas_E;s__Pseudomonas_E alvandae	GCF_019141525.1	88.9018	0.838790932	FALSE
+323	E09	Teucrium capitatum	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar 1/2	Neorhizobium alkalisoli isolate 1110TES10J6	99,58%					
+324	F01	Teucrium capitatum	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar 1/2	Novosphingobium barchaimii LL02	99,90%					
+343	F02	Atriplex halimus	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar 1/2	Neorhizobium alkalisoli 1110TES10J6	100,00%					
+345	F03	Thymus capitatus	Leaves	Bacillota	Bacilli	Nutrient Agar	Brevibacillus choshinensis strain TY1	Bad Seq	d__Bacteria;p__Bacillota;c__Bacilli;o__Brevibacillales;f__Brevibacillaceae;g__Brevibacillus;s__Brevibacillus choshinensis	GCF_001420695.1	91.7505	0.8136958711	FALSE
+347	C07	Teucrium capitatum	Leaves	Ascomycota	Pichiomycetes	Nutrient Agar 1/2	Metschnikowia sp.	80,90%/75.88%					
+348	B03	Thymus capitatus	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar	Neorhizobium alkalisoli isolate 1110TES10J6	100,00%					
+356	B04	Teucrium capitatum	Root	Actinomycetota	Actinomycetes	R2A	Microbacterium arthrosphaerae bac3	99,31%					
+367	I04	Euphorbia paralias	Leaves	Bacillota	Bacilli	Nutrient Agar 1/2	Staphylococcus hominis strain OA272	Bad Seq	d__Bacteria;p__Pseudomonadota;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas_E;s__Pseudomonas_E lalucatii	GCF_018398425.1	87.1059	0.7590045842	FALSE
+378	F04	Tetraena alba	Leaves	Pseudomonadota	Alphaproteobacteria	Nutrient Agar	Neorhizobium alkalisoli isolate 1110TES10J6	99,00%					
+534	F05	Crithmum maritimum	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Glutamicibacter halophytocola	99,60%	d__Bacteria;p__Actinomycetota;c__Actinomycetia;o__Actinomycetales;f__Micrococcaceae;g__Glutamicibacter;s__Glutamicibacter halophytocola	GCF_001302565.1	98.0165	0.8858237548	TRUE
+540	I05	Crithmum maritimum	Root	Proteobacteria		NA	Enterobacter hormaechei subsp. hoffmannii						
+550	F06	Crithmum maritimum	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar	Agrobacterium salinitolerans	95,75%					
+552	G08	Crithmum maritimum	Root	Pseudomonadota	Gammaproteobacteria	Nutrient Agar	Erwinia endophytica	100,00%					
+558	F07	Crithmum maritimum	Leaves	Bacillota	Bacilli	Nutrient Agar	Paenibacillus amylolyticus	100,00%					
+574	C09	Cakile maritima	Root	Pseudomonadota	Gammaproteobacteria	Nutrient Agar	Pantoea dispersa	100,00%	d__Bacteria;p__Pseudomonadota;c__Gammaproteobacteria;o__Enterobacterales;f__Enterobacteriaceae;g__Pantoea;s__Pantoea sp018842675	GCF_018842675.1	97.9674	0.9344764238	TRUE
+605	D01	Matthiola tricuspidata	Root	Pseudomonadota	Gammaproteobacteria	Nutrient Agar	Pantoea wallisii	100,00%	no result	no result	no result	no result	
+606	D02	Matthiola tricuspidata	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Arthrobacter ruber	100,00%					
+609	D03	Matthiola tricuspidata	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Arenivirga flava	100,00%	d__Bacteria;p__Actinomycetota;c__Actinomycetia;o__Actinomycetales;f__Microbacteriaceae;g__Yonghaparkia;s__Yonghaparkia flavibacter	GCF_012530535.1	80.4723	0.5429553265	FALSE
+614	D04	Matthiola tricuspidata	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Arthrobacter humicola	100,00%	d__Bacteria;p__Actinomycetota;c__Actinomycetia;o__Actinomycetales;f__Micrococcaceae;g__Arthrobacter;s__Arthrobacter sp001424565	GCF_001424565.1	92.5258	0.8453463961	FALSE
+620	E04	Matthiola tricuspidata	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Paenarthrobacter nitroguajacolicus	99,02%					
+621	D06	Matthiola tricuspidata	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar	Ensifer meliloti	100,00%	d__Bacteria;p__Pseudomonadota;c__Alphaproteobacteria;o__Rhizobiales;f__Rhizobiaceae;g__Sinorhizobium;s__Sinorhizobium meliloti_A	GCF_000375585.1	98.9992	0.8704566636	TRUE
+623	D07	Matthiola tricuspidata	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Agrococcus versicolor	99,16%	d__Bacteria;p__Actinomycetota;c__Actinomycetia;o__Actinomycetales;f__Microbacteriaceae;g__Agrococcus;s__Agrococcus jejuensis_A	GCF_007679035.1	90.726	0.8655387355	FALSE
+624	D08	Matthiola tricuspidata	Root	Pseudomonadota	Alphaproteobacteria	Nutrient Agar	Shinella kummerowiae	99,26%	d__Bacteria;p__Pseudomonadota;c__Alphaproteobacteria;o__Rhizobiales;f__Rhizobiaceae;g__Shinella;s__Shinella sp001713395	GCA_001713395.1	89.6686	0.709373528	FALSE
+628	D09	Matthiola tricuspidata	Root	Actinomycetota	Actinomycetes	Nutrient Agar	Brachybacterium phenoliresistens	100,00%	d__Bacteria;p__Actinomycetota;c__Actinomycetia;o__Actinomycetales;f__Dermabacteraceae;g__Brachybacterium;s__Brachybacterium phenoliresistens	GCF_000576425.1	91.3413	0.888969521	FALSE
+630	E01	Matthiola tricuspidata	Leaves	Bacillota	Bacilli	Nutrient Agar	Planomicrobium okeanokoites	100,00%	d__Bacteria;p__Bacillota;c__Bacilli;o__Bacillales;f__Planococcaceae;g__Planococcus;s__Planococcus okeanokoites	GCF_003428875.1	97.9004	0.9052924791	TRUE
+636	F08	Vitis vinifera	Root	Bacillota	Firmicutes		Oceanibacillus sp.		d__Bacteria;p__Pseudomonadota;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas_E;s__Pseudomonas_E lactis	GCF_001439845.1	95.7995	0.8499769903	TRUE
+740	H04	Gourgouthakas Cave	Cave	Actinomycetota	Actinomycetes	Nutrient Agar	Streptomyces microflavus	97,90%					
+742	H05	Gourgouthakas Cave	Cave	Actinomycetota	Actinomycetes	Nutrient Agar	Streptomonospora nanhaiensis	97,94%					
+871	Η09	Gourgouthakas Cave	Cave	Firmicutes		NA1/2	Brevibacillus laterosporus strain SGNB1/Brevibacillus laterosporus strain IHBB 9233/Brevibacillus laterosporus strain ZLB158/Brevibacillus laterosporus strain HY6						
+1020	H06	Gourgouthakas Cave	Cave	Actinomycetota	Actinomycetes	Nutrient Agar	Streptomyces microflavus	98,40%					
+1060	H07	Gourgouthakas Cave	Cave	Actinomycetota	Actinomycetes	Nutrient Agar	Streptomyces microflavus	97,32%					
+1212	B05	Control	Lab			NA	E.coli DH10B						
