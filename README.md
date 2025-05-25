@@ -12,11 +12,13 @@ infection by a phytopathogen.
 synthetic microbial community with the combinatorial properties of its members.
 * The control of the properties of the synthetic microbial community in bioassays on model plants.
 * The complete sequencing of the genome of the strains with the desired properties.
-* The attempt to identify the genomic regions responsible for these properties.
+* Identify the genomic regions responsible for these properties.
 * The communication and dissemination of the results and conclusions of the project with the scientific community
 community, wider society as well as with the private sector.
 
 ## Experiment design
+
+![Experimental design](biosolutions_flowchart.png)
 
 How many microbes in each condition? 
 
