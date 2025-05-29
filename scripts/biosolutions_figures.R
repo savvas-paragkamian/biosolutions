@@ -98,9 +98,14 @@ for (i in seq_along(vars_mean)){
                 theme_bw() +
                 scale_fill_brewer(palette = "Set3") +
                 theme(
-                      axis.text.x = element_text(angle = 45,
+                      legend.position = "top",
+                      legend.direction = "horizontal",
+                      legend.box = "horizontal",
+                      axis.text.y = element_text(size = 15),
+                      axis.text.x = element_text(angle = 90,
                                                  hjust = 1,
-                                                 size = 11)
+                                                 size = 15),
+                      axis.title.y = element_text(size = 16)
                 )
     
     ggsave(paste0("../figures/plant_growth_promotion_mean_",vars_mean[i],".png"),
@@ -121,14 +126,20 @@ for (i in seq_along(vars_mean)){
                          position = position_dodge(width = 0.82)) +
                 labs(
                      title = "Percentage Change with mean of Control plants",
-                     x = "Microbe ID",
+                     x = "",
                      y = vars_mean[i]) +
                 theme_bw() +
                 scale_fill_brewer(palette = "Set3") +
                 theme(
-                      axis.text.x = element_text(angle = 45,
+                      legend.position = "top",
+                      legend.direction = "horizontal",
+                      legend.text = element_text(size = 15),
+                      legend.box = "horizontal",
+                      axis.text.y = element_text(size = 15),
+                      axis.text.x = element_text(angle = 90,
                                                  hjust = 1,
-                                                 size = 11)
+                                                 size = 15),
+                      axis.title.y = element_text(size = 16)
                 )
     
     ggsave(paste0("../figures/plant_growth_promotion_percent_change_",
