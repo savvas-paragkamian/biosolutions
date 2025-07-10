@@ -173,7 +173,7 @@ write_delim(plant_batches_l,"../results/plant_batches_results.tsv",delim="\t")
 experiments_fi <- all_experiments |>
     dplyr::select(microbe_id,batch_id,starts_with("var")) |>
     distinct() |>
-    filter(!is.na(microbe_id), batch_id!=15)
+    filter(!is.na(microbe_id))
 
 
 # nest the data based on batch ids, i.e individual experiments
