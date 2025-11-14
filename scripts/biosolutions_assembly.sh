@@ -52,34 +52,41 @@ fi
 
 #exit 0
 ######################### Automated Short read Assembly ######################
-cd /media/sarlab/DATA/BGI_result/Separate
+cd /media/sarlab/DATA/biosolutions_project/genomes
+
+# initiate conda in the script
+source /opt/miniconda3/etc/profile.d/conda.sh
 
 while IFS= read -r dir; do
 
 	echo "Processing directory: $dir"
 
-	source activate perfect_assembly
-	cd $dir
-	mkdir -p reads_qc
+	conda activate perfect_assembly
+
+	conda info
+
+#	cd $dir
+#	mkdir -p reads_qc
 	# fastp quality
 	echo "fastp of $dir"
-	fastp --in1 $dir/1.Cleandata/$dir.IS350_Clean.1.fq.gz \
-		--in2 $dir/1.Cleandata/$dir.IS350_Clean.2.fq.gz \
-		--out1 reads_qc/$dir.QC_1.fq.gz \
-		--out2 reads_qc/$dir.QC_2.fq.gz \
-		--unpaired1 reads_qc/$dir.QC_1_u.fq.gz \
-		--unpaired2 reads_qc/$dir.QC_2_u.fq.gz
-
-	# Unicycler for short-reads only:
-	unicycler -1 reads_qc/$dir.QC_1.fq.gz \
-		-2 reads_qc/$dir.QC_2.fq.gz \
-		-o unicycler_assembly
-
-	source activate quast
-
-	python /opt/miniconda3/envs/quast/bin/quast unicycler_assembly/assembly.fasta -t 12
-
-	cd ../
+#	fastp --in1 $dir/1.Cleandata/$dir.IS350_Clean.1.fq.gz \
+#		--in2 $dir/1.Cleandata/$dir.IS350_Clean.2.fq.gz \
+#		--out1 reads_qc/$dir.QC_1.fq.gz \
+#		--out2 reads_qc/$dir.QC_2.fq.gz \
+#		--unpaired1 reads_qc/$dir.QC_1_u.fq.gz \
+#		--unpaired2 reads_qc/$dir.QC_2_u.fq.gz
+#
+#	# Unicycler for short-reads only:
+#	unicycler -1 reads_qc/$dir.QC_1.fq.gz \
+#		-2 reads_qc/$dir.QC_2.fq.gz \
+#		-o unicycler_assembly
+#
+	conda activate quast
+	conda info
+#
+#	#python /opt/miniconda3/envs/quast/bin/quast unicycler_assembly/assembly.fasta -t 12
+#
+#	cd ../
 	
 	echo "Finish Processing directory: $dir"
 done < $dirs
