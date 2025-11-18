@@ -4,11 +4,12 @@
 # Purpuse: perform bacterial assembly to multiple isolates
 # Author: Savvas Paragkamian
 # Date: 01/04/2025
-# Usage: ./biosolutions_assembly.sh assemblies_directories.txt 
+
+# Usage: ./scripts/biosolutions_assembly.sh assemblies/sequences_directories.txt /media/sarlab/DATA/biosolutions_project/genomes/
 
 ######################### Data Validation ######################
 #Download
-#cd /media/sarlab/DATA
+#cd /to/save/the/DATA
 #aws s3 cp  --recursive s3://bacmrjzd-598731762349/F25A910000023_BACmrjzD/ . 
 #
 #Validate download
@@ -28,84 +29,125 @@ time_start=`date +%s`
 #md5sum -c BGI_result/md5.txt 
 # if all is ok proceed to uncompress
 
+# sparagkamian@sarrislab:/media/sarlab/DATA/biosolutions_project/genomes$ ls -d -1 */ > ~/Documents/biosolutions/assemblies/sequences_directories.txt 
+# other way to create a list of directories
 #dirs=$(find . -maxdepth 1 -type d ! -name "." | sed 's|^\./||')
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <filename>"
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <filename> <path>"
     exit 1
 fi
 
-# obtain the absolute path of the user supplied directories
+# Absolute paths
 dirs=$(realpath "$1")
+path=$(realpath "$2")
 
-# Check if the file exists
+# Check if file exists
 if [ ! -f "$dirs" ]; then
     echo "Error: File '$dirs' not found!"
     exit 1
 fi
 
+# Check if directory exists
+if [ ! -d "$path" ]; then
+    echo "Error: Directory '$path' not found!"
+    exit 1
+fi
+
+# Prompt...
+
+echo "User input is:"
+echo "File of Directories of SRL microbes: $dirs"
+echo "Path: $path"
+microbes=$(wc -l < "$dirs")
+echo "Number of SRL microbes: $microbes"
+
 # Read the file line by line
 #while IFS= read -r line; do
 #    echo "$line"
-#    echo $dirs
-#done < "$dirs"
+#    #echo $dirs
+#done < "$file"
 
-#exit 0
-######################### Automated Short read Assembly ######################
-cd /media/sarlab/DATA/biosolutions_project/genomes
+######################### Automated Unicycler Assembly ######################
+cd $path
 
 # initiate conda in the script
 source /opt/miniconda3/etc/profile.d/conda.sh
+	
+# activate the environment of assembly
+conda activate autocycler
+#exit 0
 
-while IFS= read -r dir; do
+#----------------------------------------------------------------------#
+#----------------------- Quality Filtering ----------------------------#
+#----------------------------------------------------------------------#
+while IFS= read -r dir_file; do
 
+	dir=$(printf "%s" "$dir_file" | sed 's:[/[:space:]]*$::')
 	echo "Processing directory: $dir"
 
-	conda activate perfect_assembly
+	mkdir -p $dir/reads_qc
 
-	conda info
-
-#	cd $dir
-#	mkdir -p reads_qc
-	# fastp quality
+	# fastp quality filtering of short reads
 	echo "fastp of $dir"
-#	fastp --in1 $dir/1.Cleandata/$dir.IS350_Clean.1.fq.gz \
-#		--in2 $dir/1.Cleandata/$dir.IS350_Clean.2.fq.gz \
-#		--out1 reads_qc/$dir.QC_1.fq.gz \
-#		--out2 reads_qc/$dir.QC_2.fq.gz \
-#		--unpaired1 reads_qc/$dir.QC_1_u.fq.gz \
-#		--unpaired2 reads_qc/$dir.QC_2_u.fq.gz
+	fastp --in1 $dir/1.Cleandata/$dir*1.fq.gz \
+		--in2 $dir/1.Cleandata/$dir*2.fq.gz \
+		--out1 $dir/reads_qc/$dir.QC_1.fq.gz \
+		--out2 $dir/reads_qc/$dir.QC_2.fq.gz \
+		--unpaired1 $dir/reads_qc/$dir.QC_1_u.fq.gz \
+		--unpaired2 $dir/reads_qc/$dir.QC_2_u.fq.gz \
+		--thread 16
+
+	# fastplong for filtering the long reads
+	echo "fastplong of $dir"
+	fastplong \
+		-i $dir/1.Cleandata/$dir.filtered_reads.fq.gz \
+		-o $dir/reads_qc/$dir.QC_long.fq.gz \
+		--length_required 1000 \
+		--qualified_quality_phred 10 \
+		--thread 16
+
+	echo "Finish Processing directory: $dir"
+
+done < $dirs
+
+#----------------------------------------------------------------------#
+#----------------------- Unicycler Assembly ---------------------------#
+#----------------------------------------------------------------------#
+#cd $path
+
+mkdir -p ../logs
+
+rm -f ../logs/assemblies_unicycler_jobs.txt
+
+# build the txt file with all the jobs
+while IFS= read -r dir_file; do
+
+	dir=$(printf "%s" "$dir_file" | sed 's:[/[:space:]]*$::')
+	# Unicycler for short-reads only:
+	echo "unicycler -1 $dir/reads_qc/$dir.QC_1.fq.gz -2 $dir/reads_qc/$dir.QC_2.fq.gz -l $dir/reads_qc/$dir.QC_long.fq.gz -o $dir/unicycler_assembly -t 8" >> ../logs/assemblies_unicycler_jobs.txt
+
+done < $dirs
+
+# run 3 jobs with GNU parallel
+jobs=3
+
+set +e
+nice -n 19 parallel --jobs "$jobs" \
+	--joblog ../logs/joblog.tsv \
+	--results ../logs/logs \
+	--timeout "$max_time" < ../logs/assemblies_unicycler_jobs.txt
+set -e
+
 #
-#	# Unicycler for short-reads only:
-#	unicycler -1 reads_qc/$dir.QC_1.fq.gz \
-#		-2 reads_qc/$dir.QC_2.fq.gz \
-#		-o unicycler_assembly
+	#conda activate quast
 #
-	conda activate quast
-	conda info
-#
-#	#python /opt/miniconda3/envs/quast/bin/quast unicycler_assembly/assembly.fasta -t 12
+#	#python /opt/miniconda3/envs/quast/bin/quast unicycler_assembly/$dir_unicycler_assembly.fasta -t 12
 #
 #	cd ../
 	
-	echo "Finish Processing directory: $dir"
-done < $dirs
+echo "Finished All Unicycler Assemblies"
 
-
-echo "Finished All Assemblies"
-
-
-# for the protein prediction use prodical
-#source activate gtdbtk-2.3.2
-
-#prodigal -i unicycler_assembly/assembly.fasta -o my.genes -a my.proteins.faa
-
-######################### Taxonomy assignment ######################
-# for the ani calculation
-
-#gtdbtk ani_rep --genome_dir unicycler_assembly --out_dir ani_rep/ --cpus 15 -x fasta
-
-# the file ani_rep/gtdbtk.ani_closest.tsv contains the taxonomy of the assembly
 
 time_end=`date +%s`
 time_exec=`expr $(( $time_end - $time_start ))`
