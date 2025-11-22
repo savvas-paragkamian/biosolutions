@@ -12,9 +12,14 @@
 ##
 ## Date Created: 2024-11-14
 ##
-library(tidyverse)
-library(dunn.test)
-#library(vegan)
+
+library(readr)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(rstatix)
 
 # load data
 
@@ -61,6 +66,9 @@ microbes_conditions_summary <- all_experiments |>
     group_by(microbe_id) |> 
     summarise(n_conditions=n(),
               conditions_tested=str_c(condition, collapse = ","))
+
+
+write_delim(microbes_conditions_summary,"../results/microbes_conditions_summary.tsv",delim="\t")
 
 # there are some microbes that have been tested twice 
 # in the same condition
@@ -185,8 +193,87 @@ nested_data <- experiments_fi |>
     # Identify all "var" columns
     vars = map(data, ~ select(.x, starts_with("var")) %>% colnames()))
 
-# perform the statistics, Anova and Kruskal Wallis, for all variables
+
 variables <- select(experiments_fi, starts_with("var")) %>% colnames()
+
+# ------------------------ Non parametric------------------------- #
+
+# initiate the empty lists for the no parametric tests
+all_stats_np <- list()
+pairwise_stats_np <- list()
+
+# iterate through all variables of the experiments
+for (i in seq_along(variables)) {
+    print(reformulate("microbe_id", variables[i]))
+# Perform tests the var i
+    stats_nopara <- nested_data |>
+        mutate(
+               kruskal=map(
+                      data, ~ kruskal_test(reformulate("microbe_id", variables[i]),
+                                              data = .x) %>% mutate(variable = variables[i])),
+               dunn=map(
+                         data, ~ dunn_test(data=.x, formula=reformulate("microbe_id",variables[i]),
+                                                          p.adjust.method = "holm", 
+                                                          detailed = FALSE) %>% 
+                         mutate(variable = variables[i]))
+        )
+# Unnest results for long-format output
+    stats_nopara_l <- stats_nopara |>
+        select(batch_id,kruskal) |>
+        unnest(kruskal, names_sep = "_")
+# unnest the dunn test results
+    dunn_l <- stats_nopara |>
+        select(batch_id,dunn) |>
+        unnest(dunn, names_sep = "_")
+# and the results to list, one dataframe for each variable
+    pairwise_stats_np[[i]] <- dunn_l
+    all_stats_np[[i]] <- stats_nopara_l
+}
+
+# -------- combine the results ------- #
+all_stats_np_results <- bind_rows(all_stats_np) |> distinct()
+
+
+stats_results_kruskal <- all_stats_np_results |>
+    dplyr::select(batch_id, starts_with("kruskal")) |>
+    distinct()
+
+write_delim(stats_results_kruskal,"../results/stats_results_kruskal.tsv",delim="\t")
+
+
+####################### Post hoc test against the control ######################
+
+# bind together all results from all variables and batches
+all_pairwise_dunn_results <- bind_rows(pairwise_stats_np) |> distinct()
+
+write_delim(all_pairwise_dunn_results,"../results/all_pairwise_dunn_results.tsv",delim="\t")
+
+# filter only the pairwise comparisons with the control values
+# we need all microbe id in group1 when compared with dunn_group2=="Control"
+control_pairwise_dunn_sig <- all_pairwise_dunn_results |>
+    filter(dunn_group2=="Control") |>
+    filter(dunn_p.adj.signif!="ns") 
+
+write_delim(control_pairwise_dunn_sig,"../results/control_pairwise_dunn_sig.tsv",delim="\t")
+
+#filter the pairwise only if they are significant and higher than the control of
+#each batch and variable
+
+all_experiments_tukey_sig <- all_experiments_norm |> 
+    filter(if_else(variable=="var_dry_rosette_leaves_mean", percent_change < 0, percent_change > 0)) |>
+    mutate(variable=gsub("_mean","",variable)) |>
+    inner_join(control_pairwise_dunn_sig,
+               by=c("variable"="dunn_variable",
+                    "microbe_id"="microbe_id",
+                    "batch_id"="batch_id")
+    )
+
+write_delim(all_experiments_tukey_sig,"../results/all_experiments_tukey_sig.tsv",delim="\t")
+
+
+
+# ------------------------ parametric------------------------- #
+# perform parametric Anova and tukey post hoc for all variables
 
 all_stats <- list()
 pairwise_stats <- list()
@@ -266,16 +353,11 @@ write_delim(all_experiments_tukey_sig,"../results/all_experiments_tukey_sig.tsv"
 
 ######
 
-library(dunn.test)
-attach(airquality)
-dunn.test(Ozone, Month, kw=FALSE, method="bonferroni")
-dunn.test(Ozone, Month, kw=FALSE, method="hs")
-dunn.test(Ozone, Month, kw=FALSE, method="bh")
-
 
 kruskal_sig <- stats_results_kruskal |>
     filter(kruskal_p.value < 0.05)
-dunn_data <- all_experiments |> 
-    filter(batch_id==3)
-dunn_tes <- dunn.test(all_experiments$var_fresh_weight_mg,all_experiments$microbe_id,  kw=T,method="bonferroni")
+
+#dunn_data <- all_experiments |> 
+#    filter(batch_id==3)
+#dunn_tes <- dunn.test(all_experiments$var_fresh_weight_mg,all_experiments$microbe_id,  kw=T,method="bonferroni")
 
