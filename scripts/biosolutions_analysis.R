@@ -57,6 +57,12 @@ all_experiments <- bind_rows(pgp_data,nacl_data,water_deficit_data,synthetic_com
 
 all_experiments$microbe_id <- gsub('"', '', all_experiments$microbe_id)
 
+# filter for microbes that there are sequences
+exclude <- c("247", "248", "347","558","606","620","636","740", "742", "1020", "1060")
+
+all_experiments <- all_experiments |>
+    filter(!(microbe_id %in% exclude))
+
 write_delim(all_experiments,"../results/all_experiments_data.tsv",delim="\t")
 
 print(unique(all_experiments$condition))
@@ -198,6 +204,7 @@ variables <- select(experiments_fi, starts_with("var")) %>% colnames()
 
 # ------------------------ Non parametric------------------------- #
 
+print("Non parametric test")
 # initiate the empty lists for the no parametric tests
 all_stats_np <- list()
 pairwise_stats_np <- list()
@@ -213,7 +220,7 @@ for (i in seq_along(variables)) {
                                               data = .x) %>% mutate(variable = variables[i])),
                dunn=map(
                          data, ~ dunn_test(data=.x, formula=reformulate("microbe_id",variables[i]),
-                                                          p.adjust.method = "holm", 
+                                                          p.adjust.method = "BH", 
                                                           detailed = FALSE) %>% 
                          mutate(variable = variables[i]))
         )
@@ -232,7 +239,6 @@ for (i in seq_along(variables)) {
 
 # -------- combine the results ------- #
 all_stats_np_results <- bind_rows(all_stats_np) |> distinct()
-
 
 stats_results_kruskal <- all_stats_np_results |>
     dplyr::select(batch_id, starts_with("kruskal")) |>
@@ -259,27 +265,27 @@ write_delim(control_pairwise_dunn_sig,"../results/control_pairwise_dunn_sig.tsv"
 #filter the pairwise only if they are significant and higher than the control of
 #each batch and variable
 
-all_experiments_tukey_sig <- all_experiments_norm |> 
+all_experiments_dunn_sig <- all_experiments_norm |> 
     filter(if_else(variable=="var_dry_rosette_leaves_mean", percent_change < 0, percent_change > 0)) |>
     mutate(variable=gsub("_mean","",variable)) |>
     inner_join(control_pairwise_dunn_sig,
                by=c("variable"="dunn_variable",
-                    "microbe_id"="microbe_id",
+                    "microbe_id"="dunn_group1",
                     "batch_id"="batch_id")
     )
 
-write_delim(all_experiments_tukey_sig,"../results/all_experiments_tukey_sig.tsv",delim="\t")
+write_delim(all_experiments_dunn_sig,"../results/all_experiments_dunn_sig.tsv",delim="\t")
 
 
 
 # ------------------------ parametric------------------------- #
 # perform parametric Anova and tukey post hoc for all variables
 
+print("Parametric test")
 all_stats <- list()
 pairwise_stats <- list()
 
 for (i in seq_along(variables)) {
-    
     print(reformulate("microbe_id", variables[i]))
 # Perform tests the var i
     asasa <- nested_data |>
@@ -287,35 +293,22 @@ for (i in seq_along(variables)) {
                anova=map(
                       data, ~ broom::tidy(aov(reformulate("microbe_id", variables[i]),
                                               data = .x)) %>% mutate(variable = variables[i])),
-               kruskal=map(
-                      data, ~ broom::tidy(kruskal.test(reformulate("microbe_id", variables[i]),
-                                              data = .x)) %>% mutate(variable = variables[i])),
                tukey=map(
                          data, ~ broom::tidy(TukeyHSD(aov(reformulate("microbe_id", variables[i]),
                                                           data=.x))) %>% mutate(variable = variables[i]))
         )
 # Unnest results for long-format output
     asasa_long <- asasa |>
-        select(batch_id,anova,kruskal) |>
-        unnest(anova, names_sep = "_") |>
-        unnest(kruskal, names_sep = "_")
-    
+        select(batch_id,anova) |>
+        unnest(anova, names_sep = "_") 
     tukey_l <- asasa |>
         select(batch_id,tukey) |>
         unnest(tukey, names_sep = "_")
     pairwise_stats[[i]] <- tukey_l
-
     all_stats[[i]] <- asasa_long
 }
 
 all_stats_results <- bind_rows(all_stats) |> distinct()
-
-
-stats_results_kruskal <- all_stats_results |>
-    dplyr::select(batch_id, starts_with("kruskal")) |>
-    distinct()
-
-write_delim(stats_results_kruskal,"../results/stats_results_kruskal.tsv",delim="\t")
 
 stats_results_anova <- all_stats_results |>
     dplyr::select(batch_id, starts_with("anova")) |>
@@ -350,14 +343,4 @@ all_experiments_tukey_sig <- all_experiments_norm |>
     )
 
 write_delim(all_experiments_tukey_sig,"../results/all_experiments_tukey_sig.tsv",delim="\t")
-
-######
-
-
-kruskal_sig <- stats_results_kruskal |>
-    filter(kruskal_p.value < 0.05)
-
-#dunn_data <- all_experiments |> 
-#    filter(batch_id==3)
-#dunn_tes <- dunn.test(all_experiments$var_fresh_weight_mg,all_experiments$microbe_id,  kw=T,method="bonferroni")
 
