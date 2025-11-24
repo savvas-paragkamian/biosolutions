@@ -81,36 +81,36 @@ conda activate autocycler
 #----------------------------------------------------------------------#
 #----------------------- Quality Filtering ----------------------------#
 #----------------------------------------------------------------------#
-while IFS= read -r dir_file; do
-
-	dir=$(printf "%s" "$dir_file" | sed 's:[/[:space:]]*$::')
-	echo "Processing directory: $dir"
-
-	mkdir -p $dir/reads_qc
-
-	# fastp quality filtering of short reads
-	echo "fastp of $dir"
-	fastp --in1 $dir/1.Cleandata/$dir*1.fq.gz \
-		--in2 $dir/1.Cleandata/$dir*2.fq.gz \
-		--out1 $dir/reads_qc/$dir.QC_1.fq.gz \
-		--out2 $dir/reads_qc/$dir.QC_2.fq.gz \
-		--unpaired1 $dir/reads_qc/$dir.QC_1_u.fq.gz \
-		--unpaired2 $dir/reads_qc/$dir.QC_2_u.fq.gz \
-		--thread 16
-
-	# fastplong for filtering the long reads
-	echo "fastplong of $dir"
-	fastplong \
-		-i $dir/1.Cleandata/$dir.filtered_reads.fq.gz \
-		-o $dir/reads_qc/$dir.QC_long.fq.gz \
-		--length_required 1000 \
-		--qualified_quality_phred 10 \
-		--thread 16
-
-	echo "Finish Processing directory: $dir"
-
-done < $dirs
-
+#while IFS= read -r dir_file; do
+#
+#	dir=$(printf "%s" "$dir_file" | sed 's:[/[:space:]]*$::')
+#	echo "Processing directory: $dir"
+#
+#	mkdir -p $dir/reads_qc
+#
+#	# fastp quality filtering of short reads
+#	echo "fastp of $dir"
+#	fastp --in1 $dir/1.Cleandata/$dir*1.fq.gz \
+#		--in2 $dir/1.Cleandata/$dir*2.fq.gz \
+#		--out1 $dir/reads_qc/$dir.QC_1.fq.gz \
+#		--out2 $dir/reads_qc/$dir.QC_2.fq.gz \
+#		--unpaired1 $dir/reads_qc/$dir.QC_1_u.fq.gz \
+#		--unpaired2 $dir/reads_qc/$dir.QC_2_u.fq.gz \
+#		--thread 16
+#
+#	# fastplong for filtering the long reads
+#	echo "fastplong of $dir"
+#	fastplong \
+#		-i $dir/1.Cleandata/$dir.filtered_reads.fq.gz \
+#		-o $dir/reads_qc/$dir.QC_long.fq.gz \
+#		--length_required 1000 \
+#		--qualified_quality_phred 10 \
+#		--thread 16
+#
+#	echo "Finish Processing directory: $dir"
+#
+#done < $dirs
+#
 #----------------------------------------------------------------------#
 #----------------------- Unicycler Assembly ---------------------------#
 #----------------------------------------------------------------------#
@@ -131,11 +131,14 @@ done < $dirs
 
 # run 3 jobs with GNU parallel
 jobs=3
+max_time=100000 # 100 thousand seconds is 27,7 hours
+echo "max_time='$max_time'"
 
 set +e
 nice -n 19 parallel --jobs "$jobs" \
 	--joblog ../logs/joblog.tsv \
 	--results ../logs/logs \
+	--delay 2 \
 	--timeout "$max_time" < ../logs/assemblies_unicycler_jobs.txt
 set -e
 
