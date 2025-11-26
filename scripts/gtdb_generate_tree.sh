@@ -17,21 +17,21 @@
 # ------------------ de novo wf ----------------#
 # this run takes 10 hours
 
-#gtdbtk de_novo_wf \
-#	--extension fasta \
-#	--batchfile biosolutions_batchfile.txt \
-#	--out_dir biosolutions_gtdbtk_denovo \
-#	--bacteria \
-#	--outgroup_taxon p__Chloroflexota \
-#	--cpus 16 
+gtdbtk de_novo_wf \
+	--extension fasta \
+	--batchfile biosolutions_batchfile.txt \
+	--out_dir gtdbtk_denovo \
+	--bacteria \
+	--outgroup_taxon p__Chloroflexota \
+	--cpus 16 
 
 # outgroup is hard to define https://github.com/Ecogenomics/GTDBTk/issues/390
 
 # ------------------ classify ----------------#
 # this run takes 1 hour
 
-gtdbtk classify_wf \
-	--batchfile biosolutions_batchfile.txt \
-	--out_dir gtdbtk_classify \
-	--cpus 16
+#gtdbtk classify_wf \
+#	--batchfile biosolutions_batchfile.txt \
+#	--out_dir gtdbtk_classify \
+#	--cpus 16
 

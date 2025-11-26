@@ -87,27 +87,29 @@ conda activate autocycler
 #	echo "Processing directory: $dir"
 #
 #	mkdir -p $dir/reads_qc
+#	cd $dir
 #
 #	# fastp quality filtering of short reads
 #	echo "fastp of $dir"
-#	fastp --in1 $dir/1.Cleandata/$dir*1.fq.gz \
-#		--in2 $dir/1.Cleandata/$dir*2.fq.gz \
-#		--out1 $dir/reads_qc/$dir.QC_1.fq.gz \
-#		--out2 $dir/reads_qc/$dir.QC_2.fq.gz \
-#		--unpaired1 $dir/reads_qc/$dir.QC_1_u.fq.gz \
-#		--unpaired2 $dir/reads_qc/$dir.QC_2_u.fq.gz \
+#	fastp --in1 1.Cleandata/$dir*1.fq.gz \
+#		--in2 1.Cleandata/$dir*2.fq.gz \
+#		--out1 reads_qc/$dir.QC_1.fq.gz \
+#		--out2 reads_qc/$dir.QC_2.fq.gz \
+#		--unpaired1 reads_qc/$dir.QC_1_u.fq.gz \
+#		--unpaired2 reads_qc/$dir.QC_2_u.fq.gz \
 #		--thread 16
 #
 #	# fastplong for filtering the long reads
 #	echo "fastplong of $dir"
 #	fastplong \
-#		-i $dir/1.Cleandata/$dir.filtered_reads.fq.gz \
-#		-o $dir/reads_qc/$dir.QC_long.fq.gz \
+#		-i 1.Cleandata/$dir.filtered_reads.fq.gz \
+#		-o reads_qc/$dir.QC_long.fq.gz \
 #		--length_required 1000 \
 #		--qualified_quality_phred 10 \
 #		--thread 16
 #
 #	echo "Finish Processing directory: $dir"
+#	cd ../
 #
 #done < $dirs
 #
@@ -142,12 +144,7 @@ nice -n 19 parallel --jobs "$jobs" \
 	--timeout "$max_time" < ../logs/assemblies_unicycler_jobs.txt
 set -e
 
-#
-	#conda activate quast
-#
-#	#python /opt/miniconda3/envs/quast/bin/quast unicycler_assembly/$dir_unicycler_assembly.fasta -t 12
-#
-#	cd ../
+################### end ##################
 	
 echo "Finished All Unicycler Assemblies"
 
