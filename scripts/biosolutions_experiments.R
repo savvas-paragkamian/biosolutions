@@ -246,7 +246,6 @@ stats_results_kruskal <- all_stats_np_results |>
 
 write_delim(stats_results_kruskal,"../results/stats_results_kruskal.tsv",delim="\t")
 
-
 ####################### Post hoc test against the control ######################
 
 # bind together all results from all variables and batches

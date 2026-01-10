@@ -29,6 +29,9 @@ stats_results_kruskal <- read_delim("../results/stats_results_kruskal.tsv",delim
 control_pairwise_sig <- read_delim("../results/control_pairwise_sig_microbes.tsv",delim="\t")
 all_experiments_tukey_sig <- read_delim("../results/all_experiments_tukey_sig.tsv",delim="\t")
 
+control_pairwise_dunn_sig <- read_delim("../results/control_pairwise_dunn_sig.tsv",delim="\t")
+all_experiments_dunn_sig <- read_delim("../results/all_experiments_dunn_sig.tsv",delim="\t")
+
 ### transform to long format
 all_experiments_stats_l <- all_experiments_stats |>
     pivot_longer(cols = starts_with("var"),
@@ -275,8 +278,6 @@ controls_all_l <- controls_all |>
                  values_to = "value")
 
 for (i in seq_along(conditions)) {
-
-
     controls_all_c <- controls_all_l |>
         filter(condition==conditions[i]) 
 
@@ -369,7 +370,7 @@ plant_batch_stats_kruskal <- plant_batches_l |>
     rename("variable"="kruskal_variable")
 
 plant_batch_stats_sig_k <- plant_batch_stats_kruskal |>
-    filter(kruskal_p.value<0.05) |>
+    filter(kruskal_p<0.05) |>
     group_by(condition, variable) |>
     summarise(n_batches=n(),
               batches=str_c(batch_id, collapse = ","),
@@ -436,6 +437,7 @@ plant_batch_sig_fig <- ggplot() +
            units="cm",
            device="png")
 
+#################### parametric, anova and tukey #####################
 ### significant pairwise microbes with values higher than control
 plant_batch_c <- plant_batches_l |>
     distinct(batch_id,condition)
@@ -457,8 +459,7 @@ control_pairwise_sig_sum <- all_experiments_tukey_sig |>
               batches=str_c(batch_id, collapse = ","),
               .groups="keep") 
 
-
-microbe_heatmap <- ggplot()+
+microbe_heatmap_tukey <- ggplot()+
       geom_tile(data=control_pairwise_sig_sum,
                 aes(y=microbe_id, x=variable,fill=tukey_adj.p.value),
                 color="gray90",
@@ -495,11 +496,107 @@ microbe_heatmap <- ggplot()+
                nrow=1,
                ncol=3)
 
-ggsave("../figures/significant_microbes_control.png",
-       plot = microbe_heatmap,
+ggsave("../figures/significant_microbes_control_tukey.png",
+       plot = microbe_heatmap_tukey,
        width = 60,
        height = 30,
        units='cm', 
        device = "png",
        dpi = 300)
 
+######################## non parametric, kruskal and dunn ######################
+### significant pairwise microbes with values higher than control
+plant_batch_c <- plant_batches_l |>
+    distinct(batch_id,condition)
+
+control_pairwise_nopara_sig_sum <- all_experiments_dunn_sig |>
+    distinct(microbe_id,batch_id, variable, dunn_p.adj) |>
+    left_join(plant_batch_c) |> 
+    mutate(
+           significance = case_when(
+                                    dunn_p.adj < 0.001 ~ "***",
+                                    dunn_p.adj < 0.01 ~ "**",
+                                    dunn_p.adj < 0.05 ~ "*",
+                                    dunn_p.adj < 0.1 ~ ".",
+                                    TRUE ~ ""  # For non-significant p-values
+           )
+    ) |>
+    group_by(microbe_id,variable,significance,condition,dunn_p.adj) |>
+    summarise(n_batches=n(),
+              batches=str_c(batch_id, collapse = ","),
+              .groups="keep") |>
+    ungroup()
+
+microbe_heatmap_dunn <- ggplot()+
+      geom_tile(data=all_experiments_dunn_sig,
+                aes(y=microbe_id, x=variable,fill=percent_change),
+                color=NA,
+                alpha=1,
+                show.legend = T)+
+    geom_hline(
+        yintercept = seq(
+          1.5,
+          length(unique(all_experiments_dunn_sig$microbe_id)) - 0.5,
+          by = 1
+        ),
+        color = "grey70",
+        linewidth = 0.3
+      ) +
+      geom_text(data=all_experiments_dunn_sig,
+                aes(y=microbe_id, x=variable, label=dunn_p.adj.signif,color=dunn_p.adj.signif),
+                show.legend = TRUE,
+                size=4) +
+    scale_fill_gradient(
+      low = "darkseagreen2",
+      high = "darkgreen",
+      breaks = waiver(),
+      n.breaks = 4,
+      limits = c(
+        min(all_experiments_dunn_sig$percent_change),
+        max(all_experiments_dunn_sig$percent_change)
+      ),
+      na.value = "white",
+      guide = "colorbar"
+    ) +
+    scale_color_manual(
+                       name = "Significance\n(p-value)",
+                       values = c("***" = "black", "**" = "black", "*" = "black"),
+                       breaks = c("***", "**", "*"),
+                       labels = c("(<0.001)", "(<0.01)", "(<0.05)"))+
+    guides(fill = guide_colorbar(
+                                 ticks = FALSE,
+                                 title = "Percent change",
+                                 label.vjust = 0.8,
+                                 title.vjust = 0.8
+                                 ),
+           color = guide_legend(
+                                override.aes = list(fill = "white",
+                                                    label = c("***", "**", "*"),
+                                                    size = 5))
+           ) +
+      ylab("") +
+      xlab("")+
+      facet_wrap(~condition,
+               nrow=1,
+               ncol=3) +
+      theme_bw()+
+    theme(
+          panel.border = element_rect(color = "black", fill = NA, linewidth = 0.6),
+          panel.grid = element_blank(),  # no gridlines
+          axis.text.x = element_text(face = "bold", angle = 90, hjust = 0),
+      axis.text.y = element_text(face = "bold"),
+      axis.text = element_text(size = 13),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      legend.title = element_text(size = 9),
+      strip.background = element_blank(),
+      strip.text.x = element_text(face = "bold.italic", size = 12)
+    ) 
+
+ggsave("../figures/significant_microbes_control_dunn.png",
+       plot = microbe_heatmap_dunn,
+       width = 40,
+       height = 18,
+       units='cm', 
+       device = "png",
+       dpi = 300)
