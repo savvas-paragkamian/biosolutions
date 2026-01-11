@@ -22,6 +22,7 @@ library(stringr)
 library(ggplot2)
 library(clusterProfiler)
 library(GSEABase)
+library(vegan)
 
 # load metadata
 sample_metadata <- read_delim("../data/sarrislab_biosolutions_samples_PRJEB103843_metadata.tsv",
@@ -213,10 +214,9 @@ TERM2GENE_GO <- go_tbl %>%
 # assemlies ids
 sig_assemblies_d <- all_experiments_dunn_sig |>
     mutate(assembly=paste0("SRL",microbe_id)) |>
-    filter(!grepl(";",assembly)) |>
-    distinct(assembly)
+    filter(!grepl(";",assembly))
 
-sig_assemblies <- as.character(sig_assemblies_d$assembly)
+sig_assemblies <- unique(as.character(sig_assemblies_d$assembly))
 
 # all genes
 gene_universe <- unique(go_tbl$gene_id)
@@ -348,4 +348,71 @@ fisher_sig <- fisher_results_s |>
 
 write_delim(fisher_sig,"../results/ko_fisher_sig.tsv", delim="\t")
 
+### ordination
+
+assembly_ko <- ko_tbl |>
+    distinct(assembly,KO)
+
+ko_matrix <- assembly_ko %>%
+  mutate(value = 1) %>%
+  pivot_wider(
+    names_from = KO,
+    values_from = value,
+    values_fill = 0
+  )
+
+ko_mat <- ko_matrix %>%
+  column_to_rownames("assembly") %>%
+  as.matrix()
+
+ko_freq <- colSums(ko_mat)
+ko_mat_filt <- ko_mat[, ko_freq >= 3]
+
+
+
+set.seed(123)
+
+nmds <- metaMDS(
+  ko_mat_filt,
+  distance = "bray",
+  k = 2,
+  trymax = 100
+)
+
+
+scores_sites <- scores(nmds, display = "sites")
+
+nmds_df <- as.data.frame(scores_sites)
+nmds_df$assembly <- rownames(nmds_df)
+
+nmds_df <- nmds_df %>%
+    mutate(phenotype = if_else(assembly %in% sig_assemblies, "PGP","non-PGP"))
+
+nmds_g <- ggplot(nmds_df, aes(x = NMDS1, y = NMDS2, color = phenotype)) +
+  geom_point(size = 3, alpha = 0.8) +
+  stat_ellipse(level = 0.68, linetype = 2) +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "NMDS ordination of assemblies based on KEGG Ortholog profiles",
+    color = "Phenotype"
+  )
+
+ggsave("../figures/nmds_pgp_g.png",
+       plot = nmds_g,
+       width = 45,
+       height = 30,
+       units='cm', 
+       device = "png",
+       dpi = 300)
+
+#permanova
+
+adonis_res <- adonis2(
+  ko_mat_filt ~ phenotype,
+  data = nmds_df,
+  method = "bray",
+  permutations = 999
+)
+
+adonis_res
 
