@@ -61,6 +61,9 @@ bakta_ko_srl <- bakta_ko |>
     group_by(assembly) |>
     summarise(n_kos=n())
 
+bakta_ko_s <- bakta_ko |>
+    distinct(DbXrefs,Product)
+
 ########################### GO slim ######################
 go_tbl <- bakta_go |>
     filter(Type == "cds") |>
@@ -181,11 +184,168 @@ go_slim_bp_p <- ggplot(df, aes(x = assembly, y = GO_term, size = Count, fill = P
     fill = "Percent"
   )
 
-ggsave("../figures/go_slim_bp_bubble.png",
+ggsave("../figures/go_slim_bp.png",
        plot = go_slim_bp_p,
        width = 45,
        height = 30,
        units='cm', 
        device = "png",
        dpi = 300)
+
+
+########################### Gene enrichment ######################
+
+# data preparations
+
+go_tbl <- bakta_go |>
+    transmute(
+              assembly,
+              gene_id = `Locus Tag`,
+              GO = DbXrefs
+              ) |>
+    distinct()
+
+
+# file merger
+TERM2GENE_GO <- go_tbl %>%
+  transmute(term = GO, gene = gene_id)
+
+# assemlies ids
+sig_assemblies_d <- all_experiments_dunn_sig |>
+    mutate(assembly=paste0("SRL",microbe_id)) |>
+    filter(!grepl(";",assembly)) |>
+    distinct(assembly)
+
+sig_assemblies <- as.character(sig_assemblies_d$assembly)
+
+# all genes
+gene_universe <- unique(go_tbl$gene_id)
+
+# genes from significant assemblies
+sig_genes <- go_tbl %>%
+  filter(assembly %in% sig_assemblies) %>%
+  pull(gene_id) %>%
+  unique()
+
+# statistical test
+ego_sig <- enricher(
+  gene          = sig_genes,
+  universe      = gene_universe,
+  TERM2GENE     = TERM2GENE_GO,
+  pAdjustMethod = "BH",
+  pvalueCutoff  = 0.05,
+  qvalueCutoff  = 0.2
+)
+
+
+# 1. Make global gene IDs
+bakta_all <- bakta_go %>%
+  mutate(gene_id = paste(assembly, `Locus Tag`, sep="|")) |>
+  mutate(go_terms=DbXrefs)
+
+# 2. TERM2GENE
+TERM2GENE_GO <- bakta_all %>%
+  filter(!is.na(go_terms)) %>%
+  separate_rows(go_terms, sep=",") %>%
+  transmute(term = go_terms, gene = gene_id)
+
+# 3. Universe
+gene_universe <- unique(bakta_all$gene_id)
+
+# 4. Foreground
+sig_genes <- bakta_all %>%
+  filter(assembly %in% sig_assemblies) %>%
+  pull(gene_id) %>%
+  unique()
+
+# 5. Enrichment
+ego_sig <- enricher(
+  gene = sig_genes,
+  universe = gene_universe,
+  TERM2GENE = TERM2GENE_GO
+)
+
+
+
+##################### with KO
+
+ko_tbl <- bakta_ko |>
+    transmute(
+              assembly,
+              gene_id =  paste(assembly, `Locus Tag`, sep="|"),
+              KO = DbXrefs
+              ) |>
+    distinct() 
+
+TERM2GENE_KO <- ko_tbl %>%
+  filter(str_detect(KO, "KEGG:")) %>%
+  mutate(ko = str_extract(KO, "K\\d{5}")) %>%
+  filter(!is.na(ko)) %>%
+  transmute(term = ko, gene = gene_id)
+
+
+# Enrichment
+ekegg_sig <- enricher(
+  gene      = sig_genes,
+  universe  = gene_universe,
+  TERM2GENE = TERM2GENE_KO,
+  pAdjustMethod = "none",
+  pvalueCutoff  = 1
+)
+
+
+#################### fisher test ################
+
+
+
+pgp_genes <- ko_tbl %>%
+  filter(assembly %in% sig_assemblies) %>%
+  pull(gene_id) %>%
+  unique()
+
+nonpgp_genes <- ko_tbl %>%
+  filter(!assembly %in% sig_assemblies) %>%
+  pull(gene_id) %>%
+  unique()
+
+
+gene2ko <- ko_tbl |>
+    mutate(ko=KO) |>
+    distinct(gene_id,ko)
+
+ko_sizes <- gene2ko %>% count(ko, name="n_total")
+gene2ko <- gene2ko %>% filter(ko %in% ko_sizes$ko[ko_sizes$n_total >= 10])
+
+fisher_results <- gene2ko %>%
+  distinct(gene_id, ko) %>%
+  group_by(ko) %>%
+  summarise(
+    PGP = sum(gene_id %in% pgp_genes),      # PGP genes with KO
+    non_PGP = sum(gene_id %in% nonpgp_genes),   # non-PGP genes with KO
+    .groups = "drop"
+  ) %>%
+  mutate(
+    b = length(pgp_genes) - PGP,
+    d = length(nonpgp_genes) - non_PGP
+  ) %>%
+  rowwise() %>%
+  mutate(
+    fisher_p = fisher.test(matrix(c(PGP, b, non_PGP, d), nrow = 2),
+                           alternative = "greater")$p.value
+  ) %>%
+  ungroup()
+
+fisher_results_s <- fisher_results %>%
+  mutate(p_adj = p.adjust(fisher_p, method = "BH")) %>%
+  mutate(odds_ratio = (PGP * d) / (b * non_PGP)) %>%
+  arrange(fisher_p) 
+
+#  |>
+#  left_join(bakta_ko_s, by=c("ko"="DbXrefs"))
+
+fisher_sig <- fisher_results_s |>
+    filter(fisher_p < 0.05)
+
+write_delim(fisher_sig,"../results/ko_fisher_sig.tsv", delim="\t")
+
 
